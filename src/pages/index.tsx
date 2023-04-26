@@ -6,9 +6,8 @@ import PolkadotRPC from "./wallet/polkadotRPC";
 const clientId =
   "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
 
-
 export default function Home() {
-const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
+  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
@@ -182,15 +181,17 @@ const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
 
   return (
     <>
-    <header className="flex justify-between items-center px-4 py-3 bg-gray-900">
-    <a href="#" className="text-white font-bold text-xl">Metaquity</a>
-    <div>
-    <div className="text-white bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg">{provider ? logInView : unloggedInView}</div>
-    </div>
-  </header>
-  <div>
-    {provider ? loggedInView : null}
-  </div>
+      <header className="flex justify-between items-center px-4 py-3 bg-gray-900">
+        <a href="#" className="text-white font-bold text-xl">
+          Metaquity
+        </a>
+        <div>
+          <div className="text-white bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg">
+            {provider ? logInView : unloggedInView}
+          </div>
+        </div>
+      </header>
+      <div>{provider ? loggedInView : null}</div>
     </>
   );
 }
