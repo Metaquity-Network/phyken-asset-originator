@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import PolkadotRPC from "./wallet/polkadotRPC";
+import { Connect } from "./components/Connnetct";
 
 const clientId =
   "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
@@ -186,12 +187,9 @@ export default function Home() {
           Metaquity
         </a>
         <div>
-          <div className="text-white bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg">
-            {provider ? logInView : unloggedInView}
-          </div>
+          <Connect />
         </div>
       </header>
-      <div>{provider ? loggedInView : null}</div>
     </>
   );
 }
