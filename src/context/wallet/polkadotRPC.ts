@@ -26,11 +26,9 @@ export default class PolkadotRPC {
     const privateKey = (await this.provider.request({
       method: "private_key",
     })) as string;
-    console.log("privateKey", "0x" + privateKey);
-    const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
+    const keyring = new Keyring({ ss58Format: 666, type: "sr25519" });
 
     const keyPair = keyring.addFromUri("0x" + privateKey);
-    console.log("keyPair", keyPair);
     return keyPair;
   };
 
@@ -45,15 +43,5 @@ export default class PolkadotRPC {
     const data = await api.query.system.account(keyPair.address);
     console.log(data);
     return data.toHuman();
-  };
-
-  signAndSendTransaction = async (): Promise<any> => {
-    const keyPair = await this.getPolkadotKeyPair();
-    const api = await this.makeClient();
-    const txHash = await api.tx.balances
-      .transfer("5Gzhnn1MsDUjMi7S4cN41CfggEVzSyM58LkTYPFJY3wt7o3d", 12345)
-      .signAndSend(keyPair);
-    console.log(txHash);
-    return txHash.toHuman();
   };
 }
