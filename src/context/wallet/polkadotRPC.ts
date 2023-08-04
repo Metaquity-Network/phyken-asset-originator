@@ -13,7 +13,8 @@ export default class PolkadotRPC {
 
   makeClient = async (): Promise<any> => {
     console.log("Establishing connection to Polkadot RPC...");
-    const provider = new WsProvider("wss://westend-rpc.polkadot.io"); // testnet
+    const provider = new WsProvider(process.env.NEXT_PUBLIC_WS_PROVIDER!); // localhost
+    // const provider = new WsProvider("wss://westend-rpc.polkadot.io"); // testnet
     // const provider = new WsProvider("wss://rpc.polkadot.io"); // mainnet
     const api = await ApiPromise.create({ provider });
     const resp = await api.isReady;
@@ -26,7 +27,10 @@ export default class PolkadotRPC {
     const privateKey = (await this.provider.request({
       method: "private_key",
     })) as string;
-    const keyring = new Keyring({ ss58Format: 666, type: "sr25519" });
+    const keyring = new Keyring({
+      ss58Format: process.env.NEXT_PUBLIC_SS58FORMAT as unknown as number,
+      type: "sr25519",
+    });
 
     const keyPair = keyring.addFromUri("0x" + privateKey);
     return keyPair;

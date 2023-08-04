@@ -11,9 +11,6 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../reducers/store";
 import PolkadotRPC from "../../context/wallet/polkadotRPC";
 
-const clientId =
-  "BARoRLD5V-SOQA7cjomUIi-BdRDuwrXTezAg4VIJ5LXa6q6xjkrdY1hBsHNJVOMsCjdwL32nGpdpzu4KZVWkiNI"; // get from https://dashboard.web3auth.io
-
 export const Connect = () => {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
@@ -26,7 +23,7 @@ export const Connect = () => {
     const init = async () => {
       try {
         const web3auth = new Web3Auth({
-          clientId,
+          clientId: process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENTID!,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.OTHER,
           },

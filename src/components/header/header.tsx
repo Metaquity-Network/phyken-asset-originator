@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useAppSelector } from "../../reducers/store";
 import { Connect } from "../wallet-connect/connect";
 
