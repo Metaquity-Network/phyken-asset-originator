@@ -8,8 +8,10 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../reducers/store";
 import PolkadotRPC from "../../context/wallet/polkadotRPC";
 import { Button } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export const Connect = () => {
+  const router = useRouter();
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
@@ -38,7 +40,6 @@ export const Connect = () => {
         console.error(error);
       }
     };
-
     init();
   }, []);
 
@@ -54,6 +55,7 @@ export const Connect = () => {
       const userAccount = await rpc.getAccounts();
       console.log("Address", userAccount);
       dispatch(walletLogin(userAccount));
+      router.push("/dashboard");
     }
   };
 
