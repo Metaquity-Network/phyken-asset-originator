@@ -3,15 +3,15 @@
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
-import {
-  walletLogout,
-  walletLogin,
-} from "../../reducers/features/wallet.reducers";
+import { walletLogin } from "../../reducers/features/wallet.reducers";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../reducers/store";
 import PolkadotRPC from "../../context/wallet/polkadotRPC";
+import { Button } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export const Connect = () => {
+  const router = useRouter();
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
@@ -40,7 +40,6 @@ export const Connect = () => {
         console.error(error);
       }
     };
-
     init();
   }, []);
 
@@ -56,39 +55,19 @@ export const Connect = () => {
       const userAccount = await rpc.getAccounts();
       console.log("Address", userAccount);
       dispatch(walletLogin(userAccount));
+      router.push("/dashboard");
     }
   };
-
-  const logout = async () => {
-    if (!web3auth) {
-      console.log("web3auth not initialized yet");
-      return;
-    }
-    await web3auth.logout();
-    setProvider(null);
-    dispatch(walletLogout());
-  };
-
-  const logInView = (
-    <button onClick={login} className="card">
-      Login
-    </button>
-  );
-
-  const unloggedInView = (
-    <button onClick={logout} className="card">
-      Logout
-    </button>
-  );
 
   return (
     <>
       <div>
-        <div>
-          <div className="text-white bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg">
-            {!provider ? logInView : unloggedInView}
-          </div>
-        </div>
+        <Button
+          className="self-stretch w-[100%] rounded-21xl bg-blue-600 h-10 flex flex-row items-center justify-center p-0.5 box-border text-white hover:bg-blue-500"
+          onClick={login}
+        >
+          Login With Web3Auth
+        </Button>
       </div>
     </>
   );

@@ -1,14 +1,5 @@
-"use client";
+import { NextPage } from "next";
 
-import Header from "../components/header/header";
-import { ReduxProvider } from "../reducers/provider";
+const Home: NextPage = () => <div>Dashboard</div>;
 
-export default function Home() {
-  return (
-    <ReduxProvider>
-      <div className="relative z-[1]">
-        <Header />
-      </div>
-    </ReduxProvider>
-  );
-}
+export default Home;
