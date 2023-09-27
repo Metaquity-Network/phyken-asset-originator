@@ -4,9 +4,9 @@ import { SearchIcon } from '@/components/icons/searchIcon';
 
 const Header: NextPage = () => {
   return (
-    <div className="absolute top-[0px] right-[0px] bg-white box-border w-[1172px] h-[76px] overflow-hidden border-b-[1px] border-solid border-whitesmoke-200">
-      <div className="absolute top-[6px] left-[50px] flex flex-row items-center justify-start gap-[208px]">
-        <div className="flex flex-row items-start justify-start">
+    <div className="absolute top-[0px] right-[0px] bg-white box-border w-[80%] h-[76px] overflow-hidden border-b-[1px] border-solid border-whitesmoke-200">
+      <div className="absolute top-[6px] flex flex-row items-center w-[100%] justify-between">
+        <div className="items-start">
           <div className="rounded-xl bg-white box-border w-[537px]  h-10 overflow-hidden shrink-0 flex flex-row items-center justify-start p-3 border-[1px] border-solid border-gainsboro">
             <div className="group flex flex-col w-full mx-[-11px]">
               <Input
@@ -29,7 +29,7 @@ const Header: NextPage = () => {
                     'hover:bg-default-200/70',
                     'dark:hover:bg-default/70',
                     'group-data-[focused=true]:bg-default-200/50',
-                    'dark:group-data-[focused=true]:bg-default/60',
+                    'dark:group-data-[focused=true]:bg-default-60',
                     '!cursor-text',
                   ],
                 }}
@@ -41,7 +41,7 @@ const Header: NextPage = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-row items-center justify-start gap-[23px]">
+        <div className=" gap-[23px] items-end">
           <div className="w-[248px] flex flex-row items-center justify-center p-3 box-border gap-[8px]">
             <div className="relative w-10 h-10 overflow-hidden shrink-0">
               <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%]">
