@@ -1,21 +1,19 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
-import { walletLogin } from "../../reducers/features/wallet.reducers";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../reducers/store";
-import PolkadotRPC from "../../context/wallet/polkadotRPC";
-import { Button } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from 'react';
+import { Web3Auth } from '@web3auth/modal';
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from '@web3auth/base';
+import { walletLogin } from '@/reducers/features/wallet.reducers';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/reducers/store';
+import PolkadotRPC from '@/context/wallet/polkadotRPC';
+import { useRouter } from 'next/navigation';
+import { Button } from '@nextui-org/react';
 
 export const Connect = () => {
   const router = useRouter();
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
-    null
-  );
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -27,7 +25,7 @@ export const Connect = () => {
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.OTHER,
           },
-          web3AuthNetwork: "cyan",
+          web3AuthNetwork: 'cyan',
         });
         setWeb3auth(web3auth);
 
@@ -45,7 +43,7 @@ export const Connect = () => {
 
   const login = async () => {
     if (!web3auth) {
-      console.log("web3auth not initialized yet");
+      console.log('web3auth not initialized yet');
       return;
     }
     const web3authProvider = await web3auth.connect();
@@ -53,9 +51,9 @@ export const Connect = () => {
     if (web3authProvider) {
       const rpc = new PolkadotRPC(web3authProvider);
       const userAccount = await rpc.getAccounts();
-      console.log("Address", userAccount);
+      console.log('Address', userAccount);
       dispatch(walletLogin(userAccount));
-      router.push("/dashboard");
+      router.push('/dashboard');
     }
   };
 

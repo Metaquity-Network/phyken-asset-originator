@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import type { NextPage } from "next";
-import SignInForm from "../../components/sign-in-form/sign-in-form";
+import type { NextPage } from 'next';
+import SignInForm from '@/components/sign-in-form/sign-in-form';
 
 const LoginPage: NextPage = () => {
   return (
@@ -15,13 +15,11 @@ const LoginPage: NextPage = () => {
                 alt=""
                 src="assets/login/metaquity-logo.png"
               />
-              <h1 className="m-0 relative text-inherit leading-[24px] font-normal font-inherit">
-                Metaquity
-              </h1>
+              <h1 className="m-0 relative text-inherit leading-[24px] font-normal font-inherit">Metaquity</h1>
             </div>
             <h3 className="m-0 relative text-[20px] leading-[34px] font-normal font-inter flex items-center w-[422px]">
-              Lorem ipsum dolor sit amet consectetur. Sed leo mauris elit enim
-              semper diam tortor mi. Congue congue eget amet nulla et.
+              Lorem ipsum dolor sit amet consectetur. Sed leo mauris elit enim semper diam tortor mi. Congue congue eget
+              amet nulla et.
             </h3>
           </div>
         </div>

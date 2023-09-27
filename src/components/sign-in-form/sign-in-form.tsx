@@ -1,13 +1,5 @@
-import type { NextPage } from "next";
-import {
-  TextField,
-  InputAdornment,
-  Icon,
-  IconButton,
-  Button,
-} from "@mui/material";
-import Placeholder from "../placeholder/placeholder";
-import { Connect } from "../wallet-connect/connect";
+import type { NextPage } from 'next';
+import { Connect } from '@/components/wallet-connect/connect';
 
 const SignInForm: NextPage = () => {
   return (
