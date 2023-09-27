@@ -93,7 +93,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <Link
                   href="#"
-                  className={`group relative flex items-center gap-2.5 px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-gray hover:rounded-full dark:hover:bg-meta-4 ${
+                  className={`group relative flex items-center gap-2.5 px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:rounded-full dark:hover:bg-meta-4 ${
                     (pathname === '/' || pathname.includes('dashboard')) &&
                     'bg-white text-primary dark:bg-meta-4 dark:text-white rounded-full'
                   }`}
