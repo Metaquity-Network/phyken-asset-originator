@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 import {
   FaHome,
   FaDatabase,
@@ -13,6 +12,7 @@ import {
   FaSignOutAlt,
   FaQuestionCircle,
   FaArrowLeft,
+  FaExchangeAlt,
 } from 'react-icons/fa';
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -21,7 +21,6 @@ interface SidebarProps {
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
-
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
 
@@ -92,7 +91,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <ul className="mb-6 flex flex-col gap-1.5">
               <li>
                 <Link
-                  href="#"
+                  href="/"
                   className={`group relative flex items-center gap-2.5 px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:rounded-full dark:hover:bg-meta-4 ${
                     (pathname === '/' || pathname.includes('dashboard')) &&
                     'bg-white text-primary dark:bg-meta-4 dark:text-white rounded-full'
@@ -100,6 +99,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 >
                   <FaHome />
                   Dashboard
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/assets"
+                  className={`group relative flex items-center gap-2.5 px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:rounded-full dark:hover:bg-meta-4 ${
+                    (pathname === '/assets' || pathname.includes('assets')) &&
+                    'bg-white text-primary dark:bg-meta-4 dark:text-white rounded-full'
+                  }`}
+                >
+                  <FaDatabase />
+                  My Asset
                 </Link>
               </li>
               <li>
@@ -116,9 +127,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               <li>
                 <Link
-                  href="/wallet"
+                  href="/upload-license"
                   className={`group relative flex items-center gap-2.5 px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:rounded-full dark:hover:bg-meta-4 ${
-                    (pathname === '/licenses' || pathname.includes('licenses')) &&
+                    (pathname === '/upload-license' || pathname.includes('upload-license')) &&
                     'bg-white text-primary dark:bg-meta-4 dark:text-white rounded-full'
                   }`}
                 >
@@ -128,14 +139,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               <li>
                 <Link
-                  href="/wallet"
+                  href="/transactions"
                   className={`group relative flex items-center gap-2.5 px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:rounded-full dark:hover:bg-meta-4 ${
-                    (pathname === '/transaction' || pathname.includes('transaction')) &&
+                    (pathname === '/transactions' || pathname.includes('transactions')) &&
                     'bg-white text-primary dark:bg-meta-4 dark:text-white rounded-full'
                   }`}
                 >
-                  <FaDatabase />
-                  Transaction
+                  <FaExchangeAlt />
+                  Transactions
                   <span className="absolute right-4 block rounded-full bg-red py-1 px-2 text-xs font-medium text-white">
                     2
                   </span>

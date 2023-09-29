@@ -4,6 +4,7 @@ import { FaPlus } from 'react-icons/fa';
 import DashboardCardTwo from '@/components/cards/dashboardCardTwo';
 import { useRouter } from 'next/navigation';
 import { AssetList } from '@/types/asset';
+import DashboardCardOne from '../cards/dashboardCardOne';
 const Dashboard: React.FC = () => {
   const router = useRouter();
   const assetList: AssetList[] = [
@@ -25,13 +26,13 @@ const Dashboard: React.FC = () => {
   return (
     <>
       <div className="grid grid-cols-1 w-full gap-2 md:gap-6 pb-8">
-        <div className="flex items-center">
-          <div className="flex-grow">
+        <div className="2xsm:flex-row sm:flex items-center ">
+          <div className="flex-grow pt-3">
             <div className="text-zinc-900 2xsm:text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-normal">
               Welcome Back, Saloni
             </div>
           </div>
-          <div>
+          <div className="pt-3">
             <button
               className="flex flex-row w-full h-10 py-2 justify-center rounded-full bg-primary hover:bg-opacity-90 p-3 font-medium text-gray gap-3"
               onClick={() => router.push('upload-assets')}
@@ -58,7 +59,7 @@ const Dashboard: React.FC = () => {
           </div>
 
           <div className="flex flex-col gap-2">
-            <div className="grid grid-cols-10 py-2">
+            <div className="grid md:grid-cols-10 grid-cols-6 py-2 text-start md:text-left">
               <div className="col-span-2">
                 <p className="text-l px-4 font-bold">AssetID</p>
               </div>
@@ -68,19 +69,16 @@ const Dashboard: React.FC = () => {
               <div className="col-span-2">
                 <p className="text-l  font-bold">Category</p>
               </div>
-              <div className="col-span-2">
+              <div className="md:col-span-2 hidden md:block">
                 <p className="text-l font-bold">Price</p>
               </div>
-              <div className="col-span-2">
+              <div className="md:col-span-2 hidden md:block">
                 <p className="text-l font-bold">NFT</p>
               </div>
             </div>
             {assetList.map((asset: AssetList, index: number) => {
               return (
-                <div
-                  key={index}
-                  className="grid grid-cols-10 py-2 border-b-2 border-graydark border-opacity-20 dark:border-gray-3 dark:opacity-3"
-                >
+                <div key={index} className="grid md:grid-cols-10 grid-cols-6 py-2 text-start md:text-left">
                   <div className="col-span-2">
                     <p className="text-sm px-4">{asset.assetId}</p>
                   </div>
@@ -90,10 +88,10 @@ const Dashboard: React.FC = () => {
                   <div className="col-span-2">
                     <p className="text-sm">{asset.category}</p>
                   </div>
-                  <div className="col-span-2">
+                  <div className="md:col-span-2 hidden md:block">
                     <p className="text-sm ">{asset.price}</p>
                   </div>
-                  <div className="col-span-2">
+                  <div className="md:col-span-2 hidden md:block">
                     <p className="text-sm">{asset.nft}</p>
                   </div>
                 </div>

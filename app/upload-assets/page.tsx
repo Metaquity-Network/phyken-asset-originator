@@ -11,7 +11,7 @@ const UploadAssets: React.FC = () => {
     <>
       <Breadcrumb pageName={['Upload Assets']} />
 
-      <div className="gap-9 sm:grid-cols-2 w-[50%]">
+      <div className="gap-9 sm:grid-cols-2 md:w-[50%] 2xsm:w-[100%]">
         <div className="flex flex-col gap-9">
           <form action="#">
             <div className="p-6.5">
@@ -122,7 +122,7 @@ const UploadAssets: React.FC = () => {
                         className="rounded-full bg-primary h-10 w-10 flex justify-center py-3 text-gray hover:opacity-80 dark:hover:opacity-70"
                         onClick={(event) => {
                           event.preventDefault();
-                          router.push('upload-assets/license-upload');
+                          router.push('upload-license');
                         }}
                       >
                         <FaPlus />
