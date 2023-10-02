@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Breadcrumb from '@/src/components/Breadcrumbs/Breadcrumb';
+import Breadcrumb from '@/src/components/breadcrumbs/breadcrumb';
 import { FaPlus, FaTimes } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';

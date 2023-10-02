@@ -7,6 +7,8 @@ import { SyntheticEvent, useEffect, useState } from 'react';
 import { getCookieParser } from 'next/dist/server/api-utils';
 import axios from 'axios';
 import { deleteCookie, getCookie } from 'cookies-next';
+import Image from 'next/image';
+import SignInForm from '../components/sign-in-form/sign-in-form';
 
 const Login: NextPage = () => {
   const router = useRouter();
@@ -21,6 +23,7 @@ const Login: NextPage = () => {
 
     return '/';
   };
+
   const login = async (e: SyntheticEvent) => {
     e.stopPropagation();
     e.preventDefault();
@@ -35,29 +38,22 @@ const Login: NextPage = () => {
   };
 
   return (
-    <div className="min-vh-100 d-flex flex-row align-items-center dark:bg-transparent">
-      <div className="justify-content-center align-items-center px-3">
-        <div className="bg-white border p-5">
-          <div className="">
-            <h1>Login</h1>
-            <p className="text-black-50" onClick={login}>
-              Sign In to your account
-            </p>
-            teste
+    <div className="w-screen h-screen overflow-hidden">
+      <div className="flex flex-wrap items-center ">
+        <div className="hidden w-full xl:block xl:w-1/2 bg-primary h-screen">
+          <div className="py-17.5 px-26 text-center">
+            <Link className="mb-5.5 inline-block" href="/">
+              <Image className="hidden dark:block" src={'/images/logo/logo.svg'} alt="Logo" width={176} height={32} />
+              <Image className="dark:hidden" src={'/images/logo/logo-dark.svg'} alt="Logo" width={176} height={32} />
+            </Link>
+
+            <p className="2xl:px-20">Lorem ipsum dolor sit amet, consectetur adipiscing elit suspendisse.</p>
           </div>
         </div>
-        <div className="bg-primary text-white d-flex align-items-center justify-content-center p-5">
-          <div className="text-center">
-            <h2>Sign up</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua.
-            </p>
-            <Link href="/register">
-              <button className="btn btn-lg btn-outline-light mt-3" type="button">
-                Register Now!
-              </button>
-            </Link>
+
+        <div className="w-full grid grid-cols-1 content-center border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2  md:bg-white h-screen">
+          <div className="w-full justify-center items-center">
+            <SignInForm />
           </div>
         </div>
       </div>

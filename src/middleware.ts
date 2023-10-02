@@ -31,14 +31,11 @@ const authenticated: Middleware = (request) => {
 
 export default function middleware(request: NextRequest) {
   // Uncomment if you want to redirect if authenticated.
-  // if ([
-  //   '/login',
-  //   '/register',
-  // ].includes(request.nextUrl.pathname)) {
-  //   return redirectIfAuthenticated(request)
-  // }
+  if (['/login'].includes(request.nextUrl.pathname)) {
+    return redirectIfAuthenticated(request);
+  }
 
-  if (['/', '/pokemons', '/pokemons/client'].includes(request.nextUrl.pathname)) {
+  if (['/', '/dashboard'].includes(request.nextUrl.pathname)) {
     return authenticated(request);
   }
 

@@ -1,6 +1,6 @@
 'use client';
 
-import Loader from '../components/common/Loader';
+import Loader from '../components/common/loader';
 import Header from '../layout/admin-layout/Header';
 import Sidebar from '../layout/admin-layout/Sidebar';
 import './globals.css';

@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { CardTwoItemProps } from '@/src/types/cards';
 import Image from 'next/image';
-import ChartOne from '../Charts/ChartOne';
+import ChartOne from '../charts/ChartOne';
 
 const DashboardCardOne: React.FC<CardTwoItemProps> = ({ imageSrc, name, count, url }) => {
   return (

@@ -14,6 +14,9 @@ import {
   FaArrowLeft,
   FaExchangeAlt,
 } from 'react-icons/fa';
+import { useRouter } from 'next/router';
+import axios from 'axios';
+
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -23,6 +26,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
+  const router = useRouter();
 
   let storedSidebarExpanded = 'true';
 
@@ -59,6 +63,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       document.querySelector('body')?.classList.remove('sidebar-expanded');
     }
   }, [sidebarExpanded]);
+
+  const logout = async () => {
+    const res = await axios.post('/api/mock/logout');
+    if (res.status === 200) {
+      router.push('/login');
+    }
+  };
 
   return (
     <aside
@@ -182,8 +193,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/wallet"
+                <button
+                  onClick={logout}
                   className={`group relative flex items-center gap-2.5 px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:rounded-full dark:hover:bg-meta-4 ${
                     (pathname === '/logout' || pathname.includes('logout')) &&
                     'bg-white text-primary dark:bg-meta-4 dark:text-white rounded-full'
@@ -191,7 +202,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 >
                   <FaSignOutAlt />
                   Logout
-                </Link>
+                </button>
               </li>
             </ul>
           </div>
