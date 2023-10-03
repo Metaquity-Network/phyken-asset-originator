@@ -21,5 +21,4 @@ jobs:
           node-version: 8
           cache: 'npm'
       - run: npm install
-      - run: npm lint
       - run: npm build

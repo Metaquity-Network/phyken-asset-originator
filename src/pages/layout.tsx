@@ -3,8 +3,6 @@
 import Loader from '../components/common/loader';
 import Header from '../layout/admin-layout/Header';
 import Sidebar from '../layout/admin-layout/Sidebar';
-import './globals.css';
-import './satoshi.css';
 import { useState, useEffect } from 'react';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
