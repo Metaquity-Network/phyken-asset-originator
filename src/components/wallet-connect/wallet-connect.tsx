@@ -50,9 +50,16 @@ export const Connect = () => {
       deleteCookie('redirect');
       return redirect.toString();
     }
-
     return '/';
   };
+
+  async function loginAPI(loginRequest: any) {
+    const response = await axios.post(`/api/auth/login`, loginRequest);
+    if (response.status === 200) {
+      router.push(getRedirect());
+    }
+    router.push('/');
+  }
 
   const login = async () => {
     if (!web3auth) {
@@ -65,13 +72,9 @@ export const Connect = () => {
       const rpc = new PolkadotRPC(web3authProvider);
       const userAccount = await rpc.getAccounts();
       console.log('Address', userAccount);
+      const user = await web3auth.getUserInfo();
       dispatch(walletLogin(userAccount));
-
-      const res = await axios.post('api/mock/login');
-      if (res.status === 200) {
-        router.push(getRedirect());
-      }
-      router.push('/');
+      loginAPI({ authType: user.typeOfLogin, email: user.email, tokenID: user.idToken });
     }
   };
 

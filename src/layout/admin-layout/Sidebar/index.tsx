@@ -65,7 +65,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   }, [sidebarExpanded]);
 
   const logout = async () => {
-    const res = await axios.post('/api/mock/logout');
+    const res = await axios.post('/api/auth/logout');
     if (res.status === 200) {
       router.push('/login');
     }
