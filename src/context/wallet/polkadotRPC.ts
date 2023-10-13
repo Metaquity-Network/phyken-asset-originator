@@ -13,9 +13,8 @@ export default class PolkadotRPC {
 
   makeClient = async (): Promise<any> => {
     console.log('Establishing connection to Polkadot RPC...');
-    const provider = new WsProvider(process.env.NEXT_PUBLIC_WS_PROVIDER!); // localhost
-    // const provider = new WsProvider('wss://westend-rpc.polkadot.io'); // testnet
-    // const provider = new WsProvider("wss://rpc.polkadot.io"); // mainnet
+    const rpcUrl = process.env.POLKADOT_RPC_URL || 'wss://rpc.testnet.metaquity.xyz';
+    const provider = new WsProvider(rpcUrl);
     const api = await ApiPromise.create({ provider });
     const resp = await api.isReady;
     console.log('Polkadot RPC is ready', resp);
@@ -31,7 +30,7 @@ export default class PolkadotRPC {
       ss58Format: process.env.NEXT_PUBLIC_SS58FORMAT as unknown as number,
       type: 'sr25519',
     });
-
+    console.log('privateKey', privateKey);
     const keyPair = keyring.addFromUri('0x' + privateKey);
     return keyPair;
   };

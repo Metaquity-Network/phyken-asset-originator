@@ -73,6 +73,7 @@ export const Connect = () => {
       const userAccount = await rpc.getAccounts();
       console.log('Address', userAccount);
       const user = await web3auth.getUserInfo();
+      console.log('User', await rpc.getBalance());
       dispatch(walletLogin(userAccount));
       loginAPI({ authType: user.typeOfLogin, email: user.email, tokenID: user.idToken });
     }

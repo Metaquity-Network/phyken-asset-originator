@@ -5,25 +5,26 @@ import { AssetList } from '../types/asset';
 import { useRouter } from 'next/router';
 import { FaPlus } from 'react-icons/fa';
 import DashboardCardTwo from '../components/cards/dashboardCardTwo';
-
+import { useEffect } from 'react';
+import { useToast } from '../hooks/useToast';
+import axios from 'axios';
 const Home: NextPage = () => {
   const router = useRouter();
-  const assetList: AssetList[] = [
-    {
-      assetId: 'tes',
-      category: 'tes',
-      name: 'rwe',
-      nft: 'nft',
-      price: '$10',
-    },
-    {
-      assetId: 'tes',
-      category: 'tes',
-      name: 'rwe',
-      nft: 'nft',
-      price: '$10',
-    },
-  ];
+  const { showToast } = useToast();
+
+  const assetList: AssetList[] = [];
+
+  useEffect(() => {
+    const getAssetList = async () => {
+      const res = await axios.post('/api/assets/getAllAssets');
+      if (res.status === 200) {
+      } else {
+      }
+    };
+    showToast('error', { type: 'success' });
+    getAssetList();
+  }, []);
+
   return (
     <AdminLayout>
       <div>
