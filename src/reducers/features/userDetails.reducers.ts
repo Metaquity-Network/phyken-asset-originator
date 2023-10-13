@@ -16,7 +16,7 @@ const initialState: InitialState = {
     email: '',
     username: '',
     profileImage: '',
-    isMfaEnabled: false
+    isMfaEnabled: false,
   },
 };
 
@@ -24,18 +24,15 @@ export const UserDetailsReducers = createSlice({
   name: 'userDetails',
   initialState,
   reducers: {
-    userLogout: () => {
-      return initialState;
-    },
     addUserDetails: (state, action: PayloadAction<any>) => {
       return {
         value: {
-          ...action.payload
+          ...action.payload,
         },
       };
     },
   },
 });
 
-export const { userLogout, addUserDetails } = UserDetailsReducers.actions;
+export const { addUserDetails } = UserDetailsReducers.actions;
 export default UserDetailsReducers.reducer;

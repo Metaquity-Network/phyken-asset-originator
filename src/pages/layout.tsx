@@ -1,8 +1,8 @@
 'use client';
 
-import Loader from '../components/common/loader';
-import Header from '../layout/admin-layout/Header';
-import Sidebar from '../layout/admin-layout/Sidebar';
+import Loader from '@/src/components/common/Loader';
+import Header from '@/src/layout/admin-layout/Header';
+import Sidebar from '@/src/layout/admin-layout/Sidebar';
 import { useState, useEffect } from 'react';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

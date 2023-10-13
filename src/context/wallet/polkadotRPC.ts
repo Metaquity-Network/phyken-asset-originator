@@ -1,7 +1,6 @@
 import { SafeEventEmitterProvider } from '@web3auth/base';
 import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
-
 import { ApiPromise, WsProvider } from '@polkadot/api';
 
 export default class PolkadotRPC {
@@ -11,7 +10,7 @@ export default class PolkadotRPC {
     this.provider = provider;
   }
 
-  makeClient = async (): Promise<any> => {
+  makeClient = async (): Promise<ApiPromise> => {
     console.log('Establishing connection to Polkadot RPC...');
     const rpcUrl = process.env.POLKADOT_RPC_URL || 'wss://rpc.testnet.metaquity.xyz';
     const provider = new WsProvider(rpcUrl);
@@ -44,7 +43,6 @@ export default class PolkadotRPC {
     const keyPair = await this.getPolkadotKeyPair();
     const api = await this.makeClient();
     const data = await api.query.system.account(keyPair.address);
-    console.log(data);
     return data.toHuman();
   };
 }

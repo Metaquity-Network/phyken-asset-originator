@@ -4,17 +4,25 @@ import { AdminLayout } from '../layout';
 import { AssetList } from '../types/asset';
 import { useRouter } from 'next/router';
 import { FaPlus } from 'react-icons/fa';
-import DashboardCardTwo from '../components/cards/dashboardCardTwo';
 import { useEffect, useState } from 'react';
 import { useToast } from '../hooks/useToast';
-import axios from 'axios';
 import { useAppSelector } from '../reducers/store';
+import DashboardCardTwo from '../components/cards/dashboardCardTwo';
+import axios from 'axios';
 
 const Home: NextPage = () => {
   const router = useRouter();
   const { showToast } = useToast();
   const [assetList, setAssetList] = useState<AssetList[]>([]);
-  const userDetails = useAppSelector((state) => state.userDetailsReducers.value);
+  const userDetails = useAppSelector((state) => state.userDetails.value);
+
+  const User = () => {
+    if (userDetails) {
+      return <p>Welcome Back, {userDetails.username.split(' ')[0]}</p>;
+    }
+    return null;
+  };
+
   useEffect(() => {
     const getAssetList = async () => {
       const res = await axios.post('/api/assets/getAllAssets');
@@ -35,7 +43,7 @@ const Home: NextPage = () => {
           <div className="2xsm:flex-row sm:flex items-center ">
             <div className="flex-grow pt-3">
               <div className="text-zinc-900 2xsm:text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-normal">
-                {userDetails ? <p>Welcome Back, {userDetails.username.split(' ')[0]}</p> : null}
+                <User />
               </div>
             </div>
             <div className="pt-3">
