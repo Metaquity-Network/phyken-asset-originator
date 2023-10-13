@@ -12,7 +12,6 @@ export default async function handler(req: NextApiRequest, res: any) {
         Authorization: 'Bearer ' + authToken,
       },
     });
-    console.log('response', response);
     const data = response.data;
     res.status(200).json(data);
   } catch (error: any) {

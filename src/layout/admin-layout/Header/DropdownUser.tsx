@@ -1,12 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useAppSelector } from '@/src/reducers/store';
+import { UserDetailsState } from '@/src/reducers/features/userDetails.reducers';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
+
+ const userDetails = useAppSelector((state) => state.userDetailsReducers.value);
+  useEffect(() => {
+  },[])
 
   // close on click outside
   useEffect(() => {
@@ -33,11 +38,11 @@ const DropdownUser = () => {
     <div className="relative">
       <Link ref={trigger} onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center gap-4" href="#">
         <span className="hidden text-right lg:block">
-          <span className="block text-sm font-medium text-black dark:text-white">Thomas Anree</span>
+          <span className="block text-sm font-medium text-black dark:text-white">{userDetails?.username}</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
-          <Image width={112} height={112} src={'/images/user/user-01.png'} alt="User" />
+          <Image width={112} height={112} src={userDetails.profileImage} alt="User" />
         </span>
 
         <svg

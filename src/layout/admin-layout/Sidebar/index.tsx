@@ -28,7 +28,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const sidebar = useRef<any>(null);
   const router = useRouter();
 
-  let storedSidebarExpanded = 'true';
+  const storedSidebarExpanded = 'true';
 
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true',
