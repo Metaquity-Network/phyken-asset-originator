@@ -1,6 +1,7 @@
 import { serializeCookie } from '@/src/lib';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getCookies, getCookie, setCookie, deleteCookie } from 'cookies-next';
 
 type ResponseData = {
   message: string;
@@ -16,9 +17,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         'Content-Type': 'application/json',
       },
     });
-    const data = response.data;
-    const cookie = serializeCookie('auth', JSON.stringify(data), { path: '/' });
-    res.status(200).setHeader('Set-Cookie', cookie).json(data);
+    const data = response.data.accessToken;
+    setCookie('server-auth', JSON.stringify(data), { req, res, maxAge: 60 * 60 * 24 });
+    res.status(200).json(data);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching user data' });
   }

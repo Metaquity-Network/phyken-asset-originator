@@ -2,41 +2,10 @@
 
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { SyntheticEvent, useEffect, useState } from 'react';
-import { getCookieParser } from 'next/dist/server/api-utils';
-import axios from 'axios';
-import { deleteCookie, getCookie } from 'cookies-next';
 import Image from 'next/image';
 import SignInForm from '../components/sign-in-form/sign-in-form';
 
 const Login: NextPage = () => {
-  const router = useRouter();
-  const [submitting, setSubmitting] = useState(false);
-
-  const getRedirect = () => {
-    const redirect = getCookie('redirect');
-    if (redirect) {
-      deleteCookie('redirect');
-      return redirect.toString();
-    }
-
-    return '/';
-  };
-
-  const login = async (e: SyntheticEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-
-    setSubmitting(true);
-
-    const res = await axios.post('api/mock/login');
-    if (res.status === 200) {
-      router.push(getRedirect());
-    }
-    setSubmitting(false);
-  };
-
   return (
     <div className="w-screen h-screen overflow-hidden">
       <div className="flex flex-wrap items-center ">

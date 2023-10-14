@@ -10,6 +10,7 @@ import { AppDispatch } from '@/src/reducers/store';
 import PolkadotRPC from '@/src/context/wallet/polkadotRPC';
 import { deleteCookie, getCookie } from 'cookies-next';
 import axios from 'axios';
+import { addUserDetails } from '@/src/reducers/features/userDetails.reducers';
 
 export const Connect = () => {
   const router = useRouter();
@@ -73,7 +74,17 @@ export const Connect = () => {
       const userAccount = await rpc.getAccounts();
       console.log('Address', userAccount);
       const user = await web3auth.getUserInfo();
+      console.log('getAccounts', await rpc.getAccounts());
+      console.log('User', user);
       dispatch(walletLogin(userAccount));
+      dispatch(
+        addUserDetails({
+          email: user.email,
+          username: user.name,
+          profileImage: user.profileImage,
+          isMfaEnabled: user.isMfaEnabled,
+        }),
+      );
       loginAPI({ authType: user.typeOfLogin, email: user.email, tokenID: user.idToken });
     }
   };

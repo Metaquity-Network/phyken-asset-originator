@@ -14,7 +14,7 @@ const Breadcrumb = ({ pageName }: BreadcrumbProps) => {
               Dashboard /
             </Link>
           </li>
-          {pageName.map((name: string, index: any) =>
+          {pageName.map((name: string, index: number) =>
             index !== pageName.length - 1 ? (
               <Link key={index} className="font-medium" href={`/${name.toLocaleLowerCase().replaceAll(' ', '-')}`}>
                 {name} /
