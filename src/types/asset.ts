@@ -1,7 +1,7 @@
 export type AssetList = {
-  assetId?: string;
+  id?: string;
   name?: string;
   category?: string;
-  price?: string;
+  cost?: string;
   nft?: string;
 };

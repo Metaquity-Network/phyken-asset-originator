@@ -95,7 +95,7 @@ const Home: NextPage = () => {
                   return (
                     <div key={index} className="grid md:grid-cols-10 grid-cols-6 py-2 text-start md:text-left">
                       <div className="col-span-2">
-                        <p className="text-sm px-4">{asset.assetId}</p>
+                        <p className="text-sm px-4">{asset.id}</p>
                       </div>
                       <div className="col-span-2">
                         <p className="text-sm">{asset.name}</p>
@@ -104,7 +104,7 @@ const Home: NextPage = () => {
                         <p className="text-sm">{asset.category}</p>
                       </div>
                       <div className="md:col-span-2 hidden md:block">
-                        <p className="text-sm ">{asset.price}</p>
+                        <p className="text-sm ">{asset.cost}</p>
                       </div>
                       <div className="md:col-span-2 hidden md:block">
                         <p className="text-sm">{asset.nft}</p>
