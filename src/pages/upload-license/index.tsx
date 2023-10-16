@@ -3,9 +3,11 @@
 import Breadcrumb from '@/src/components/Breadcrumbs/Breadcrumb';
 import { AdminLayout } from '@/src/layout';
 import axios, { AxiosResponse } from 'axios';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 const UploadLicensesModal: React.FC = () => {
+  const router = useRouter();
   const [fileUploaded, setFileUploaded] = useState<File>();
   const [imagePreview, setImagePreview] = useState<any>();
   const [formData, setFormData] = useState({});
@@ -29,20 +31,9 @@ const UploadLicensesModal: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const formSubmit = new FormData();
-
-    if (fileUploaded) {
-      formSubmit.append('file', fileUploaded);
-    }
-
     try {
-      const response: AxiosResponse = await axios.post('/api/licenses/uploadLicense', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          accept: 'application/json',
-        },
-      });
-      console.log(response.data);
+      await axios.post('/api/licenses/uploadLicense', formData);
+      router.push('/');
     } catch (error: any) {
       if (error.response) {
         console.error(`Request failed with status ${error.response.status}`);
@@ -187,7 +178,7 @@ const UploadLicensesModal: React.FC = () => {
                   </div>
                 </div>
                 <button className="flex justify-center rounded bg-primary p-3 font-medium text-gray hover:opacity-80 dark:hover:opacity-70 md:w-[50%] 2xsm:w-[100%]">
-                  Upload Asset
+                  Upload License
                 </button>
               </div>
             </form>

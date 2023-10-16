@@ -1,12 +1,12 @@
 'use client';
 
 import React from 'react';
-import Breadcrumb from '@/src/components/breadcrumbs/breadcrumb';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { AssetHistory } from '@/src/types/history';
 import { AdminLayout } from '@/src/layout';
 import TokenPrice from '@/src/components/charts/token-price';
+import Breadcrumb from '@/src/components/Breadcrumbs/Breadcrumb';
 
 const Wallet: React.FC = () => {
   const router = useRouter();

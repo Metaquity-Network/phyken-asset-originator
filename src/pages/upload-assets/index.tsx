@@ -42,12 +42,10 @@ const UploadAssets: React.FC = () => {
       ...prevData,
       [e.target.name]: e.target.value,
     }));
-    console.log(formData);
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0] as File;
-    console.log(selectedFile);
     setFile(selectedFile);
     setFormData({
       ...formData,
@@ -65,17 +63,9 @@ const UploadAssets: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response: AxiosResponse = await axios.post('/api/assets/uploadAsset', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          accept: 'application/json',
-        },
-      });
-
-      // Handle the response from the API route as needed
-      console.log(response.data);
+      await axios.post('/api/assets/uploadAsset', formData);
+      router.push('/');
     } catch (error: any) {
-      // Handle any errors that may occur during the request
       if (error.response) {
         console.error(`Request failed with status ${error.response.status}`);
       } else {

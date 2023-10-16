@@ -7,11 +7,12 @@ export default async function handler(req: NextApiRequest, res: any) {
   const authToken = req.headers.cookie?.split('%22')[1];
 
   const formData = new FormData();
-  formData.append('name', 'test');
-  formData.append('category', 'test');
-  formData.append('description', 'test');
-  formData.append('cost', 'test');
-  formData.append('licenseID', 'test');
+  console.log(req.body);
+  formData.append('name', req.body.name);
+  formData.append('category', req.body.category);
+  formData.append('description', req.body.description);
+  formData.append('cost', req.body.cost);
+  formData.append('licenseID', req.body.licenseID);
 
   if (req.body.file) {
     formData.append('file', req.body.file);
@@ -20,7 +21,6 @@ export default async function handler(req: NextApiRequest, res: any) {
     const response = await axios.post(`${baseURL}${version}/asset/uploadAsset`, formData, {
       headers: {
         accept: 'application/json',
-        'Content-Type': 'multipart/form-data',
         Authorization: 'Bearer ' + authToken,
       },
     });
