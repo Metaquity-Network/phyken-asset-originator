@@ -7,7 +7,6 @@ export default async function handler(req: NextApiRequest, res: any) {
   const authToken = req.headers.cookie?.split('%22')[1];
 
   const formData = new FormData();
-  console.log(req.body);
   formData.append('name', req.body.name);
   formData.append('category', req.body.category);
   formData.append('description', req.body.description);

@@ -5,9 +5,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const version = process.env.VERSION || 'v1';
   const baseURL = process.env.BASE_URL || 'http://localhost:3000';
   const authToken = req.headers.cookie?.split('%22')[1];
-  console.log(req.body);
+
   const formData = new FormData();
-  // Append your form fields to the formData object
   formData.append('licenseNumber', req.body.licenseNumber);
   formData.append('category', req.body.category);
   formData.append('licenseValidity', req.body.licenseValidity);
