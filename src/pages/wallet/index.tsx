@@ -1,16 +1,18 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { AssetHistory } from '@/src/types/history';
 import { AdminLayout } from '@/src/layout';
 import TokenPrice from '@/src/components/charts/token-price';
 import Breadcrumb from '@/src/components/Breadcrumbs/Breadcrumb';
+import { useWeb3Auth } from '@/src/hooks/useWeb3Auth';
+import PolkadotRPC from '@/src/context/wallet/polkadotRPC';
 
 const Wallet: React.FC = () => {
   const router = useRouter();
-
+  const { web3auth, provider } = useWeb3Auth();
   const chatData: AssetHistory[] = [
     {
       date: '13 Dec 2020',
@@ -34,6 +36,25 @@ const Wallet: React.FC = () => {
       type: 'Buy',
     },
   ];
+
+  useEffect(() => {
+    const polkaLoad = async () => {
+      if (!web3auth) {
+        console.log('web3auth not initialized yet');
+        return;
+      }
+      const web3authProvider = await web3auth.connect();
+      if (web3authProvider) {
+        const rpc = new PolkadotRPC(web3authProvider);
+        const getBalance = await rpc.getBalance();
+        const user = await web3auth.getUserInfo();
+        console.log('user', getBalance);
+      }
+    };
+
+    polkaLoad();
+  }, [web3auth, provider]);
+
   return (
     <>
       <AdminLayout>
