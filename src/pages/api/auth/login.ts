@@ -1,7 +1,6 @@
-import { serializeCookie } from '@/src/lib';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getCookies, getCookie, setCookie, deleteCookie } from 'cookies-next';
+import { setCookie } from 'cookies-next';
 
 type ResponseData = {
   message: string;

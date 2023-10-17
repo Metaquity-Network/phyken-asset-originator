@@ -38,6 +38,29 @@ const Wallet: React.FC = () => {
     <>
       <AdminLayout>
         <Breadcrumb pageName={['Wallet']} />
+        <div className="grid grid-cols-1 w-full gap-2 md:gap-6 pb-8">
+          <div className="2xsm:flex-row sm:flex items-end md:justify-end">
+            <div className="pt-3 flex md:justify-end 2xsm:flex-col 2xsm:pt-3 sm:flex-row">
+              <div className="p-2">
+                <button
+                  className="flex flex-row w-45 h-10 py-2 justify-center rounded-full border border-primary text-primary hover:bg-opacity-90 p-3 font-medium gap-3 hover:bg-primary hover:text-white dark:text-gray-3 dark:border-gray-3 dark:hover:bg-primary"
+                  onClick={() => router.push('upload-assets')}
+                >
+                  <div>Buy MQTY Tokens</div>
+                </button>
+              </div>
+              <div className="p-2">
+                <button
+                  className="flex flex-row w-45 h-10 py-2 justify-center rounded-full border border-primary text-primary hover:bg-opacity-90 p-3 font-medium gap-3 hover:bg-primary hover:text-white dark:text-gray-3 dark:border-gray-3 dark:hover:bg-primary"
+                  onClick={() => router.push('upload-assets')}
+                >
+                  <div>Sell MQTy Tokens</div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="grid grid-cols-12 gap-4 md:gap-6 2xl:gap-7.5">
           <div className="col-span-12 xl:col-span-7">
             <div className="grid grid-cols-12 gap-4 md:gap-6 2xl:gap-7.5">

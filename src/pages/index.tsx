@@ -32,7 +32,6 @@ const Home: NextPage = () => {
         setAssetList([]);
       }
     };
-    showToast('error', { type: 'success' });
     getAssetList();
   }, []);
 

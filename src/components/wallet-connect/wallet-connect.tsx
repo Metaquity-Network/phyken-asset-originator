@@ -85,7 +85,11 @@ export const Connect = () => {
           isMfaEnabled: user.isMfaEnabled,
         }),
       );
-      loginAPI({ authType: user.typeOfLogin, email: user.email, tokenID: user.idToken });
+      loginAPI({
+        ...user,
+        authType: user.typeOfLogin,
+        tokenID: user.idToken,
+      });
     }
   };
 

@@ -1,13 +1,16 @@
 'use client';
 
 import Breadcrumb from '@/src/components/Breadcrumbs/Breadcrumb';
+import { useToast } from '@/src/hooks/useToast';
 import { AdminLayout } from '@/src/layout';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import { ToastContainer } from 'react-toastify';
 
 const UploadLicensesModal: React.FC = () => {
   const router = useRouter();
+  const { showToast } = useToast();
   const [fileUploaded, setFileUploaded] = useState<File>();
   const [imagePreview, setImagePreview] = useState<any>();
   const [formData, setFormData] = useState({});
@@ -33,6 +36,7 @@ const UploadLicensesModal: React.FC = () => {
     e.preventDefault();
     try {
       await axios.post('/api/licenses/uploadLicense', formData);
+      showToast('License uploaded', { type: 'success' });
       router.push('/');
     } catch (error: any) {
       if (error.response) {
@@ -184,6 +188,7 @@ const UploadLicensesModal: React.FC = () => {
             </form>
           </div>
         </div>
+        <ToastContainer />
       </AdminLayout>
     </>
   );

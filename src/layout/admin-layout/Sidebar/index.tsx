@@ -30,6 +30,61 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   const storedSidebarExpanded = 'true';
 
+  const sidebarMenu = [
+    {
+      name: 'Dashboard',
+      icon: 'FaHome',
+      pathname: '/',
+    },
+    {
+      name: 'My Assets',
+      icon: 'FaDatabase',
+      pathname: '/assets',
+    },
+    {
+      name: 'Wallet',
+      icon: 'FaWallet',
+      pathname: '/wallet',
+    },
+    {
+      name: 'Licenses',
+      icon: 'FaIdCardAlt',
+      pathname: '/upload-license',
+    },
+    {
+      name: 'Transactions',
+      icon: 'FaExchangeAlt',
+      pathname: '/transactions',
+      notification: 2,
+    },
+  ];
+
+  interface IconComponents {
+    [key: string]: React.ComponentType<any>;
+  }
+
+  const iconComponents: IconComponents = {
+    FaHome,
+    FaDatabase,
+    FaWallet,
+    FaIdCardAlt,
+    FaCog,
+    FaSignOutAlt,
+    FaQuestionCircle,
+    FaArrowLeft,
+    FaExchangeAlt,
+  };
+
+  const FaIcon = ({ icon }: { icon: string }) => {
+    const IconComponent = iconComponents[icon];
+
+    if (!IconComponent) {
+      return null; // Handle unknown icons or provide a default icon
+    }
+
+    return <IconComponent />;
+  };
+
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true',
   );
@@ -82,9 +137,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     >
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5 re">
         <Link href="/">
-          {/* <Image width={176} height={32} src={'/images/logo/logo.png'} alt="Logo" />
-           */}
-          LOGO
+          <img width={45} height={32} src={'/images/logo/logo.png'} alt="Logo" />
         </Link>
 
         <button
@@ -102,69 +155,27 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <nav className="flex flex-col justify-between h-screen mt-5 py-4 px-4 lg:mt-9 lg:px-6">
           <div>
             <ul className="mb-6 flex flex-col gap-1.5">
-              <li>
-                <Link
-                  href="/"
-                  className={`group relative flex items-center gap-2.5 px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:rounded-full dark:hover:bg-meta-4 ${
-                    (pathname === '/' || pathname.includes('dashboard')) &&
-                    'bg-white text-primary dark:bg-meta-4 dark:text-white rounded-full'
-                  }`}
-                >
-                  <FaHome />
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/assets"
-                  className={`group relative flex items-center gap-2.5 px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:rounded-full dark:hover:bg-meta-4 ${
-                    (pathname === '/assets' || pathname.includes('assets')) &&
-                    'bg-white text-primary dark:bg-meta-4 dark:text-white rounded-full'
-                  }`}
-                >
-                  <FaDatabase />
-                  My Asset
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/wallet"
-                  className={`group relative flex items-center gap-2.5 px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:rounded-full dark:hover:bg-meta-4 ${
-                    (pathname === '/wallet' || pathname.includes('wallet')) &&
-                    'bg-white text-primary dark:bg-meta-4 dark:text-white rounded-full'
-                  }`}
-                >
-                  <FaWallet />
-                  Wallet
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/upload-license"
-                  className={`group relative flex items-center gap-2.5 px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:rounded-full dark:hover:bg-meta-4 ${
-                    (pathname === '/upload-license' || pathname.includes('upload-license')) &&
-                    'bg-white text-primary dark:bg-meta-4 dark:text-white rounded-full'
-                  }`}
-                >
-                  <FaIdCardAlt />
-                  Licenses
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/transactions"
-                  className={`group relative flex items-center gap-2.5 px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:rounded-full dark:hover:bg-meta-4 ${
-                    (pathname === '/transactions' || pathname.includes('transactions')) &&
-                    'bg-white text-primary dark:bg-meta-4 dark:text-white rounded-full'
-                  }`}
-                >
-                  <FaExchangeAlt />
-                  Transactions
-                  <span className="absolute right-4 block rounded-full bg-red py-1 px-2 text-xs font-medium text-white">
-                    2
-                  </span>
-                </Link>
-              </li>
+              {sidebarMenu.map((menu, i) => {
+                return (
+                  <li key={i}>
+                    <Link
+                      href={menu.pathname}
+                      className={`group relative flex items-center gap-2.5 px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:rounded-full dark:hover:bg-primary ${
+                        pathname === menu.pathname &&
+                        'bg-white text-primary dark:bg-meta-4 dark:text-white rounded-full dark:hover:bg-primary'
+                      }`}
+                    >
+                      <FaIcon icon={menu.icon} />
+                      {menu.name}
+                      {menu.notification ? (
+                        <span className="absolute right-4 block rounded-full bg-red py-1 px-2 text-xs font-medium text-white">
+                          {menu.notification}
+                        </span>
+                      ) : null}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
