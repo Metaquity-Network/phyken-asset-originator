@@ -35,9 +35,10 @@ export const Connect = () => {
       console.log('web3auth not initialized yet');
       return;
     }
-    const web3authProvider = await web3auth.connect();
-    if (web3authProvider) {
-      const rpc = new PolkadotRPC(web3authProvider);
+    await web3auth.initModal();
+    await web3auth.connect();
+    if (web3auth.provider) {
+      const rpc = new PolkadotRPC(web3auth.provider);
       const userAccount = await rpc.getAccounts();
       dispatch(walletLogin(userAccount));
       const user = await web3auth.getUserInfo();

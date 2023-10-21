@@ -1,7 +1,8 @@
 import { SafeEventEmitterProvider } from '@web3auth/base';
-import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
-import { ApiPromise, WsProvider } from '@polkadot/api';
+import { ApiPromise, WsProvider, Keyring } from '@polkadot/api';
+import type { Registry } from '@polkadot/types/types';
+import { formatBalance } from '@polkadot/util';
 
 export default class PolkadotRPC {
   private provider: SafeEventEmitterProvider;
@@ -29,7 +30,6 @@ export default class PolkadotRPC {
       ss58Format: process.env.NEXT_PUBLIC_SS58FORMAT as unknown as number,
       type: 'sr25519',
     });
-    console.log('privateKey', privateKey);
     const keyPair = keyring.addFromUri('0x' + privateKey);
     return keyPair;
   };
@@ -42,7 +42,75 @@ export default class PolkadotRPC {
   getBalance = async (): Promise<any> => {
     const keyPair = await this.getPolkadotKeyPair();
     const api = await this.makeClient();
-    const data = await api.query.system.account(keyPair.address);
-    return data.toHuman();
+    const format = this.getFormat(api.registry, 0);
+    const json = await api.derive.balances?.all(keyPair.address);
+    const [prefix, postfix] = formatBalance(json.freeBalance, {
+      decimals: format[0],
+      forceUnit: '-',
+      withSi: false,
+    }).split('.');
+    console.log([prefix, postfix]);
+    return { prefix, postfix, symbol: format[1] };
   };
+
+  getUserTransactionHistory = async (): Promise<any> => {
+    const api = await this.makeClient();
+    const keyPair = await this.getPolkadotKeyPair();
+    const chainInfo = await api.registry.getChainProperties();
+
+    const unsub = await api.query.system.account.multi([keyPair.address], (balances: any) => {
+      const [{ data: balance1 }] = balances;
+
+      console.log(`The balances are ${balance1.free} `);
+    });
+  };
+
+  transferBalance = async (accountID: string, value: any): Promise<any> => {
+    const keyPair = await this.getPolkadotKeyPair();
+    const api = await this.makeClient();
+    await api.tx.balances.transfer(keyPair.address, 121212121211212).signAndSend(keyPair);
+    this.getFormat(api.registry, 0);
+    const info = await api.tx.balances.transfer(keyPair.address, 121212121211212).paymentInfo(keyPair.address);
+    console.log(`
+    class=${info.class.toString()},
+    weight=${info.weight.toString()},
+    partialFee=${info.partialFee.toHuman()}
+  `);
+  };
+
+  getFormat(registry: Registry, formatIndex = 0): [number, string] {
+    const decimals = registry.chainDecimals;
+    const tokens = registry.chainTokens;
+
+    return [
+      formatIndex < decimals.length ? decimals[formatIndex] : decimals[0],
+      formatIndex < tokens.length ? tokens[formatIndex] : tokens[1],
+    ];
+  }
+
+  async createNFT() {
+    const keyPair = await this.getPolkadotKeyPair();
+    const api = await this.makeClient();
+    const nonce: any = await api.query.system.account(keyPair.address);
+    console.log('nonce', nonce.nonce.toNumber());
+    const currentNonce = nonce.nonce.toNumber() as number;
+    const call = await api.tx.nfts.create(keyPair.address, {}).signAndSend(keyPair);
+    const callMint = await api.tx.nfts.mint(4, 1, keyPair.address, {}).signAndSend(keyPair);
+    console.log('call NFT >>> ', call);
+    console.log('call mint <<<', callMint);
+    await api.rpc.chain.subscribeNewHeads((header) => {
+      console.log(`New block added at block number ${header.number.toNumber()}`);
+      // Your code to handle the new block here
+    });
+    this.fractionalizeNFT();
+    return call;
+  }
+
+  async fractionalizeNFT() {
+    const keyPair = await this.getPolkadotKeyPair();
+    const api = await this.makeClient();
+    const call = await api.tx.nftFractionalization.fractionalize(3, 1, 100, keyPair.address, 100).signAndSend(keyPair);
+    console.log('call NFT', call);
+    return call;
+  }
 }

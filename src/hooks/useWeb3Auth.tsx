@@ -24,12 +24,7 @@ export const useWeb3Auth = () => {
           },
         });
         setWeb3auth(web3authInstance);
-
-        await web3authInstance.initModal();
-
-        if (web3authInstance.provider) {
-          setProvider(web3authInstance.provider);
-        }
+        setProvider(web3authInstance.provider);
       } catch (error) {
         console.error(error);
       }
