@@ -51,7 +51,7 @@ const Wallet: React.FC = () => {
         // const user = await web3auth.getUserInfo();
         const balance = await rpc.getBalance();
         // await rpc.transferBalance('test', 'tets');
-        await rpc.createNFT();
+        // await rpc.createNFT();
         setBalance(balance);
       }
     };
@@ -94,13 +94,13 @@ const Wallet: React.FC = () => {
                   <div className="flex flex-row items-center justify-between p-3 xl:p-8">
                     <div className="font-semibold text-lg">MQTY tokens in your wallet</div>
                     <div className=" text-zinc-900 text-7xl font-normal font-['Inter'] leading-10">
-                      <p>
+                      <div>
                         {balance ? (
                           <p className="text-lg text-bold">
                             {balance.prefix} {balance.symbol}
                           </p>
                         ) : null}
-                      </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -109,7 +109,7 @@ const Wallet: React.FC = () => {
                 <div className="rounded-sm border border-stroke bg-ghostwhite-100 shadow-default dark:border-strokedark dark:bg-boxdark">
                   <div className="flex flex-row items-center justify-between p-3 xl:p-8">
                     <div className="font-semibold text-lg">Price of MQTY Tokens</div>
-                    <div className=" text-zinc-900 text-7xl font-normal font-['Inter'] leading-10">$4</div>
+                    <div className=" text-zinc-900 text-lg font-normal font-['Inter'] leading-10">$4</div>
                   </div>
                 </div>
               </div>

@@ -12,10 +12,8 @@ export default async function handler(req: NextApiRequest, res: any) {
   formData.append('description', req.body.description);
   formData.append('cost', req.body.cost);
   formData.append('licenseID', req.body.licenseID);
+  formData.append('assetURL', req.body.assetURL);
 
-  if (req.body.file) {
-    formData.append('file', req.body.file);
-  }
   try {
     const response = await axios.post(`${baseURL}${version}/asset/uploadAsset`, formData, {
       headers: {
@@ -26,7 +24,6 @@ export default async function handler(req: NextApiRequest, res: any) {
     const data = response.data;
     res.status(200).json(data);
   } catch (error: any) {
-    console.log('error', error.response.data);
-    res.status(500).json(error.response.data);
+    res.status(500).json(error);
   }
 }
