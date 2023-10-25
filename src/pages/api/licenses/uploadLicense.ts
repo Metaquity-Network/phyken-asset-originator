@@ -7,11 +7,11 @@ export default async function handler(req: NextApiRequest, res: any) {
   const authToken = req.headers.cookie?.split('%22')[1];
 
   const formData = new FormData();
-  formData.append('licenseNumber', req.body.name);
+  formData.append('licenseNumber', req.body.licenseNumber);
   formData.append('category', req.body.category);
-  formData.append('licenseValidity', req.body.description);
-  formData.append('country', req.body.cost);
-  formData.append('state', req.body.licenseID);
+  formData.append('licenseValidity', req.body.licenseValidity);
+  formData.append('country', req.body.country);
+  formData.append('state', req.body.state);
   formData.append('licenseURL', req.body.licenseURL);
   try {
     const response = await axios.post(`${baseURL}${version}/licenses/uploadLicense`, formData, {
@@ -23,6 +23,6 @@ export default async function handler(req: NextApiRequest, res: any) {
     const data = response.data;
     res.status(200).json(data);
   } catch (error: any) {
-    res.status(500).json(error);
+    res.status(500).json(error.data.message);
   }
 }
