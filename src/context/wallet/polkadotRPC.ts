@@ -49,20 +49,12 @@ export default class PolkadotRPC {
       forceUnit: '-',
       withSi: false,
     }).split('.');
-    console.log([prefix, postfix]);
     return { prefix, postfix, symbol: format[1] };
   };
 
   getUserTransactionHistory = async (): Promise<any> => {
     const api = await this.makeClient();
     const keyPair = await this.getPolkadotKeyPair();
-    const chainInfo = await api.registry.getChainProperties();
-
-    const unsub = await api.query.system.account.multi([keyPair.address], (balances: any) => {
-      const [{ data: balance1 }] = balances;
-
-      console.log(`The balances are ${balance1.free} `);
-    });
   };
 
   transferBalance = async (accountID: string, value: any): Promise<any> => {
@@ -91,26 +83,42 @@ export default class PolkadotRPC {
   async createNFT() {
     const keyPair = await this.getPolkadotKeyPair();
     const api = await this.makeClient();
-    const nonce: any = await api.query.system.account(keyPair.address);
-    console.log('nonce', nonce.nonce.toNumber());
-    const currentNonce = nonce.nonce.toNumber() as number;
-    const call = await api.tx.nfts.create(keyPair.address, {}).signAndSend(keyPair);
-    const callMint = await api.tx.nfts.mint(4, 1, keyPair.address, {}).signAndSend(keyPair);
-    console.log('call NFT >>> ', call);
-    console.log('call mint <<<', callMint);
-    await api.rpc.chain.subscribeNewHeads((header) => {
-      console.log(`New block added at block number ${header.number.toNumber()}`);
-      // Your code to handle the new block here
+    return new Promise((resolve, _) => {
+      api.tx.nfts.create(keyPair.address, {}).signAndSend(keyPair, async (event: any) => {
+        const result = event.toHuman();
+        if (result.status.InBlock) {
+          api.tx.nfts
+            .mint(result.events[3].event.data.collection, 1, keyPair.address, {})
+            .signAndSend(keyPair, async (mintEvent: any) => {
+              const mintResult = mintEvent.toHuman();
+              if (mintResult.status.InBlock) {
+                console.log('NFT successfully minted:', mintResult.status.InBlock);
+                resolve({
+                  nftBlockMint: mintResult.status.InBlock,
+                  nftCollectionID: result.events[3].event.data.collection,
+                });
+              }
+            });
+        }
+      });
     });
-    this.fractionalizeNFT();
-    return call;
   }
 
-  async fractionalizeNFT() {
+  async fractionalizeNFT(collectionID: number, itemID: number, factional: number, assetID: number) {
     const keyPair = await this.getPolkadotKeyPair();
     const api = await this.makeClient();
-    const call = await api.tx.nftFractionalization.fractionalize(3, 1, 100, keyPair.address, 100).signAndSend(keyPair);
-    console.log('call NFT', call);
-    return call;
+    return new Promise((resolve, _) => {
+      api.tx.nftFractionalization
+        .fractionalize(collectionID, itemID, assetID, keyPair.address, factional)
+        .signAndSend(keyPair, async (event: any) => {
+          const result = event.toHuman();
+          if (result.status.InBlock) {
+            console.log('Fractionalized:', result.status.InBlock);
+            resolve({
+              nftBlockMint: result.status.InBlock,
+            });
+          }
+        });
+    });
   }
 }

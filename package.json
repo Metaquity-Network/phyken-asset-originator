@@ -9,7 +9,7 @@
     "lint": "next lint --fix"
   },
   "dependencies": {
-    "@polkadot/api": "^10.9.1",
+    "@polkadot/api": "^10.10.1",
     "@reduxjs/toolkit": "^1.9.7",
     "@types/aws-sdk": "^2.7.0",
     "@web3auth/base": "^7.0.1",

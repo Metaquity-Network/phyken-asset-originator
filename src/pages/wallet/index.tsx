@@ -47,11 +47,15 @@ const Wallet: React.FC = () => {
       await web3auth.initModal();
       if (web3auth.provider) {
         const rpc = new PolkadotRPC(web3auth.provider);
-        // const getAccounts = await rpc.getAccounts();
-        // const user = await web3auth.getUserInfo();
         const balance = await rpc.getBalance();
-        // await rpc.transferBalance('test', 'tets');
-        // await rpc.createNFT();
+        // // await rpc.transferBalance('test', 'tets');
+        // try {
+        //   // const mintBlock = await rpc.createNFT();
+        //   const mintBlock = await rpc.fractionalizeNFT(25, 1, 100, 2);
+        //   console.log('Minted in block:', mintBlock);
+        // } catch (error) {
+        //   console.error('Error creating NFT:', error);
+        // }
         setBalance(balance);
       }
     };
@@ -92,7 +96,7 @@ const Wallet: React.FC = () => {
               <div className="col-span-12 md:col-span-6">
                 <div className="rounded-sm border border-stroke bg-ghostwhite-100 shadow-default dark:border-strokedark dark:bg-boxdark">
                   <div className="flex flex-row items-center justify-between p-3 xl:p-8">
-                    <div className="font-semibold text-lg">MQTY tokens in your wallet</div>
+                    <div className="font-semibold text-lg">MQTY Tokens</div>
                     <div className=" text-zinc-900 text-7xl font-normal font-['Inter'] leading-10">
                       <div>
                         {balance ? (

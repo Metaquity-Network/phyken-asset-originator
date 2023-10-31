@@ -12,6 +12,7 @@ const nextConfig = {
     AWS_S3_REGION_SECRET_ACCESS_KEY: process.env.AWS_S3_REGION_SECRET_ACCESS_KEY,
     VERSION: process.env.VERSION,
     BASE_URL: process.env.BASE_URL,
+    POLKADOT_RPC_URL: process.env.POLKADOT_RPC_URL,
   },
 };
 
