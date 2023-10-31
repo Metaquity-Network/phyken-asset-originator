@@ -183,11 +183,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <ul className="mb-6 flex flex-col gap-1.5">
               <li>
                 <Link
-                  href="/wallet"
-                  className={`group relative flex items-center gap-2.5 px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:rounded-full dark:hover:bg-meta-4 ${
-                    (pathname === '/settings' || pathname.includes('settings')) &&
-                    'bg-white text-primary dark:bg-meta-4 dark:text-white rounded-full'
-                  }`}
+                  href="/settings"
+                  className={`group relative flex items-center gap-2.5 px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:rounded-full dark:hover:bg-meta-4`}
                 >
                   <FaCog />
                   Settings
@@ -195,11 +192,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               <li>
                 <Link
-                  href="/wallet"
-                  className={`group relative flex items-center gap-2.5 px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:rounded-full dark:hover:bg-meta-4 ${
-                    (pathname === '/support' || pathname.includes('support')) &&
-                    'bg-white text-primary dark:bg-meta-4 dark:text-white rounded-full'
-                  }`}
+                  href="/support"
+                  className={`group relative flex items-center gap-2.5 px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:rounded-full dark:hover:bg-meta-4`}
                 >
                   <FaQuestionCircle />
                   Support
@@ -208,10 +202,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <button
                   onClick={logout}
-                  className={`group relative flex items-center gap-2.5 px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:rounded-full dark:hover:bg-meta-4 ${
-                    (pathname === '/logout' || pathname.includes('logout')) &&
-                    'bg-white text-primary dark:bg-meta-4 dark:text-white rounded-full'
-                  }`}
+                  className={`group relative flex items-center gap-2.5 px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark hover:rounded-full dark:hover:bg-meta-4`}
                 >
                   <FaSignOutAlt />
                   Logout

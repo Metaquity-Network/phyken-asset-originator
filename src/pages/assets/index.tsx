@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { FaCheckCircle, FaPlus } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { AssetList } from '@/src/types/asset';
 import Link from 'next/link';
 import { AdminLayout } from '@/src/layout';
@@ -17,24 +16,24 @@ const Assets: React.FC = () => {
 
   const assetList: AssetList[] = [
     {
-      assetId: '#123456',
+      id: '#123456',
       category: 'Crypto',
       name: 'Lorem',
-      price: '$500',
+      cost: '$500',
       nft: 'NFT',
     },
     {
-      assetId: '#123456',
+      id: '#123456',
       category: 'Crypto',
       name: 'Lorem',
-      price: '$500',
+      cost: '$500',
       nft: 'NFT',
     },
     {
-      assetId: '#123456',
+      id: '#123456',
       category: 'Crypto',
       name: 'Lorem',
-      price: '$500',
+      cost: '$500',
       nft: 'NFT',
     },
   ];
@@ -111,7 +110,7 @@ const Assets: React.FC = () => {
                   return (
                     <div key={index} className="grid md:grid-cols-10 grid-cols-6 py-2 text-start md:text-left">
                       <div className="col-span-2">
-                        <p className="text-sm px-4">{asset.assetId}</p>
+                        <p className="text-sm px-4">{asset.id}</p>
                       </div>
                       <div className="col-span-2">
                         <p className="text-sm">{asset.name}</p>
@@ -120,7 +119,7 @@ const Assets: React.FC = () => {
                         <p className="text-sm">{asset.category}</p>
                       </div>
                       <div className="md:col-span-2 hidden md:block">
-                        <p className="text-sm ">{asset.price}</p>
+                        <p className="text-sm ">{asset.cost}</p>
                       </div>
                       <div className="md:col-span-2 hidden md:block">
                         <p className="text-sm">{asset.nft}</p>

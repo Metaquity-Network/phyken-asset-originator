@@ -96,6 +96,8 @@ export default class PolkadotRPC {
                 resolve({
                   nftBlockMint: mintResult.status.InBlock,
                   nftCollectionID: result.events[3].event.data.collection,
+                  nftItem: 1,
+                  nftOwner: keyPair.address,
                 });
               }
             });
@@ -104,18 +106,22 @@ export default class PolkadotRPC {
     });
   }
 
-  async fractionalizeNFT(collectionID: number, itemID: number, factional: number, assetID: number) {
+  async fractionalizeNFT(collectionID: number, itemID: number, assetID: number, factional: number) {
     const keyPair = await this.getPolkadotKeyPair();
     const api = await this.makeClient();
     return new Promise((resolve, _) => {
       api.tx.nftFractionalization
-        .fractionalize(collectionID, itemID, assetID, keyPair.address, factional)
+        .fractionalize(collectionID, itemID, assetID, keyPair.address, 100)
         .signAndSend(keyPair, async (event: any) => {
           const result = event.toHuman();
           if (result.status.InBlock) {
             console.log('Fractionalized:', result.status.InBlock);
             resolve({
-              nftBlockMint: result.status.InBlock,
+              nftCollectionID: collectionID,
+              nftItem: itemID,
+              fractionalizationAssetID: assetID,
+              fractionalizationBlockMint: result.status.InBlock,
+              fractionalization: factional,
             });
           }
         });

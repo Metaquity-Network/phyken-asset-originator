@@ -109,10 +109,18 @@ const UploadAssets: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('formSubmitData', formSubmitData);
     try {
-      await axios.post('/api/assets/uploadAsset', formSubmitData);
-      showToast('Asset uploaded', { type: 'success' });
-      router.push('/');
+      await fetch('/api/assets/uploadAsset', {
+        method: 'POST',
+        body: JSON.stringify({
+          ...formSubmitData,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      router.push('/upload-assets/asset-uploaded');
     } catch (error: any) {
       showToast(error.message, { type: 'error' });
     }
@@ -233,7 +241,7 @@ const UploadAssets: React.FC = () => {
                   <input
                     type="number"
                     placeholder="Enter the asset cost (in dollars)"
-                    name="cost"
+                    name="assetPrice"
                     onChange={handleInputChange}
                     required
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"

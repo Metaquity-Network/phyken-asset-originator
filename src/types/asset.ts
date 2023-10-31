@@ -1,7 +1,17 @@
 export type AssetList = {
-  id?: string;
-  name?: string;
-  category?: string;
-  cost?: string;
-  nft?: string;
+  assetPrice: string;
+  assetStatus: string;
+  assetURL: string;
+  category: string;
+  description: string;
+  id: string;
+  licenseID: string;
+  name: string;
+  nftDetails: NftDetails;
+  nftFractionalizationDetails: any;
+};
+
+type NftDetails = {
+  nftBlockMint: string;
+  nftCollectionID: string;
 };

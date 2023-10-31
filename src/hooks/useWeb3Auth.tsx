@@ -9,7 +9,6 @@ export const useWeb3Auth = () => {
   useEffect(() => {
     const init = async () => {
       if (web3auth) {
-        // If web3auth is already initialized, no need to initialize it again
         return;
       }
 
@@ -20,7 +19,7 @@ export const useWeb3Auth = () => {
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.OTHER,
             chainId: '0x1',
-            rpcTarget: 'rpcUrl', // Replace with your RPC URL
+            rpcTarget: 'rpcUrl',
           },
         });
         setWeb3auth(web3authInstance);
