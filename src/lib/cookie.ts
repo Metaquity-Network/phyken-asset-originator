@@ -1,6 +1,5 @@
 import { CookieSerializeOptions, serialize } from 'cookie';
 
-// eslint-disable-next-line import/prefer-default-export
 export function serializeCookie(name: string, value: unknown, options?: CookieSerializeOptions) {
   const stringValue = typeof value === 'object' ? `j:${JSON.stringify(value)}` : String(value);
 

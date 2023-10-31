@@ -7,29 +7,46 @@ import { AdminLayout } from '@/src/layout';
 import Breadcrumb from '@/src/components/Breadcrumbs/Breadcrumb';
 import axios, { AxiosResponse } from 'axios';
 import { LicenseList } from '@/src/types/license';
+import { S3 } from 'aws-sdk';
+import { v4 as uuidv4 } from 'uuid';
+import { PutObjectRequest } from 'aws-sdk/clients/s3';
+import { useToast } from '@/src/hooks/useToast';
+import { ToastContainer } from 'react-toastify';
 
 const UploadAssets: React.FC = () => {
   const router = useRouter();
+  const { showToast } = useToast();
   const [licenseList, setLicenseList] = useState<LicenseList[]>([]);
   const [file, setFile] = useState<File>();
   const [imagePreview, setImagePreview] = useState<any>();
-  const [formData, setFormData] = useState({});
+  const [formSubmitData, setFormSubmitData] = useState({});
+  const [upload, setUpload] = useState<S3.ManagedUpload | null>(null);
 
   useEffect(() => {
     async function getAllLicense() {
       try {
         const response: AxiosResponse = await axios.get('/api/licenses/getAllLicense');
         setLicenseList(response.data);
-      } catch (error: any) {
-        if (error.response) {
-          console.error(`Request failed with status ${error.response.status}`);
-        } else {
-          console.error('An error occurred while sending the request.');
+        if (response.data.length > 0) {
+          setFormSubmitData((prevData) => ({
+            ...prevData,
+            licenseID: response.data[0].id,
+          }));
         }
+      } catch (error: any) {
+        showToast('Unable to get all licenses', { type: 'error' });
       }
     }
     getAllLicense();
   }, []);
+
+  useEffect(() => {
+    return upload?.abort();
+  }, []);
+
+  useEffect(() => {
+    setUpload(null);
+  }, [file]);
 
   const renderedItems = licenseList.map((license, index) => (
     <option key={index} value={license.id}>
@@ -38,17 +55,17 @@ const UploadAssets: React.FC = () => {
   ));
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setFormData((prevData) => ({
+    setFormSubmitData((prevData) => ({
       ...prevData,
       [e.target.name]: e.target.value,
     }));
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0] as File;
     setFile(selectedFile);
-    setFormData({
-      ...formData,
+    setFormSubmitData({
+      ...formSubmitData,
       file: selectedFile,
     });
 
@@ -58,19 +75,46 @@ const UploadAssets: React.FC = () => {
       setImagePreview(e.target?.result);
     };
     reader.readAsDataURL(selectedFile);
+    const uuidFileName = uuidv4().toString();
+    const params: PutObjectRequest = {
+      Bucket: process.env.AWS_S3_BUCKET_NAME || 'metaquity-upload',
+      Key: uuidFileName,
+      Body: selectedFile,
+      ContentType: 'image/jpeg',
+      ACL: 'public-read',
+    };
+    const s3 = new S3({
+      region: process.env.AWS_S3_REGION || 'ap-northeast-1',
+      credentials: {
+        accessKeyId: process.env.AWS_S3_REGION_ACCESS_KEY || '',
+        secretAccessKey: process.env.AWS_S3_REGION_SECRET_ACCESS_KEY || '',
+      },
+    });
+    try {
+      const upload = s3.upload(params);
+      setUpload(upload);
+      upload.on('httpUploadProgress', (p) => {
+        console.log(p.loaded / p.total);
+      });
+      await upload.promise();
+      setFormSubmitData({
+        ...formSubmitData,
+        assetURL: `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_S3_REGION}.amazonaws.com/${uuidFileName}`,
+      });
+      showToast('Asset file uploaded', { type: 'success' });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post('/api/assets/uploadAsset', formData);
+      await axios.post('/api/assets/uploadAsset', formSubmitData);
+      showToast('Asset uploaded', { type: 'success' });
       router.push('/');
     } catch (error: any) {
-      if (error.response) {
-        console.error(`Request failed with status ${error.response.status}`);
-      } else {
-        console.error('An error occurred while sending the request.');
-      }
+      showToast(error.message, { type: 'error' });
     }
   };
 
@@ -187,8 +231,8 @@ const UploadAssets: React.FC = () => {
                     Cost<sup className="text-red">*</sup>
                   </label>
                   <input
-                    type="text"
-                    placeholder="Enter the asset cost"
+                    type="number"
+                    placeholder="Enter the asset cost (in dollars)"
                     name="cost"
                     onChange={handleInputChange}
                     required
@@ -265,6 +309,7 @@ const UploadAssets: React.FC = () => {
             </form>
           </div>
         </div>
+        <ToastContainer />
       </AdminLayout>
     </>
   );

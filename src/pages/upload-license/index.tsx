@@ -1,45 +1,88 @@
 'use client';
 
 import Breadcrumb from '@/src/components/Breadcrumbs/Breadcrumb';
+import { useToast } from '@/src/hooks/useToast';
 import { AdminLayout } from '@/src/layout';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { ToastContainer } from 'react-toastify';
+import { S3 } from 'aws-sdk';
+import { v4 as uuidv4 } from 'uuid';
+import { PutObjectRequest } from 'aws-sdk/clients/s3';
 
-const UploadLicensesModal: React.FC = () => {
+const UploadLicenses: React.FC = () => {
   const router = useRouter();
-  const [fileUploaded, setFileUploaded] = useState<File>();
-  const [imagePreview, setImagePreview] = useState<any>();
-  const [formData, setFormData] = useState({});
+  const { showToast } = useToast();
+  const [file, setFile] = useState<File | null>(null);
+  const [upload, setUpload] = useState<S3.ManagedUpload | null>(null);
+  const [imagePreview, setImagePreview] = useState<any>(null);
+  const [formSubmitData, setFormSubmitData] = useState({});
+
+  useEffect(() => {
+    return upload?.abort();
+  }, []);
+
+  useEffect(() => {
+    setUpload(null);
+  }, [file]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
+    setFormSubmitData({
+      ...formSubmitData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0] as File;
-    setFileUploaded(selectedFile);
+    setFile(selectedFile);
     const reader = new FileReader();
     reader.onload = (e) => {
       setImagePreview(e.target?.result);
     };
     reader.readAsDataURL(selectedFile);
+    const uuidFileName = uuidv4().toString();
+    const params: PutObjectRequest = {
+      Bucket: process.env.AWS_S3_BUCKET_NAME || 'metaquity-upload',
+      Key: uuidFileName,
+      Body: selectedFile,
+      ContentType: 'image/jpeg',
+      ACL: 'public-read',
+    };
+    const s3 = new S3({
+      region: process.env.AWS_S3_REGION || 'ap-northeast-1',
+      credentials: {
+        accessKeyId: process.env.AWS_S3_REGION_ACCESS_KEY || '',
+        secretAccessKey: process.env.AWS_S3_REGION_SECRET_ACCESS_KEY || '',
+      },
+    });
+    try {
+      const upload = s3.upload(params);
+      setUpload(upload);
+      upload.on('httpUploadProgress', (p) => {
+        console.log(p.loaded / p.total);
+      });
+      await upload.promise();
+      setFormSubmitData({
+        ...formSubmitData,
+        licenseURL: `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_S3_REGION}.amazonaws.com/${uuidFileName}`,
+      });
+      showToast('License file uploaded', { type: 'success' });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post('/api/licenses/uploadLicense', formData);
+      await axios.post('/api/licenses/uploadLicense', formSubmitData);
+      showToast('License uploaded', { type: 'success' });
       router.push('/');
     } catch (error: any) {
-      if (error.response) {
-        console.error(`Request failed with status ${error.response.status}`);
-      } else {
-        console.error('An error occurred while sending the request.');
-      }
+      console.error('Server Error:', error.response.status, error.response.data);
+      showToast(error.message, { type: 'error' });
     }
   };
 
@@ -184,9 +227,10 @@ const UploadLicensesModal: React.FC = () => {
             </form>
           </div>
         </div>
+        <ToastContainer />
       </AdminLayout>
     </>
   );
 };
 
-export default UploadLicensesModal;
+export default UploadLicenses;

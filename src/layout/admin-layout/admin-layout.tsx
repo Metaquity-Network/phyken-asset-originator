@@ -1,8 +1,7 @@
-import React, { PropsWithChildren, useCallback, useEffect, useState } from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 import Head from 'next/head';
 import Sidebar from '@/src/layout/admin-layout/Sidebar';
 import Header from '@/src/layout/admin-layout/Header';
-import { ToastContainer } from 'react-toastify';
 
 export default function AdminLayout({ children }: PropsWithChildren) {
   const [sidebarOpen, setSidebarOpen] = useState(false);

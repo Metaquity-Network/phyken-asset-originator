@@ -1,16 +1,19 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { AssetHistory } from '@/src/types/history';
 import { AdminLayout } from '@/src/layout';
 import TokenPrice from '@/src/components/charts/token-price';
 import Breadcrumb from '@/src/components/Breadcrumbs/Breadcrumb';
+import { useWeb3Auth } from '@/src/hooks/useWeb3Auth';
+import PolkadotRPC from '@/src/context/wallet/polkadotRPC';
 
 const Wallet: React.FC = () => {
   const router = useRouter();
-
+  const { web3auth, provider } = useWeb3Auth();
+  const [balance, setBalance] = useState<any>(null);
   const chatData: AssetHistory[] = [
     {
       date: '13 Dec 2020',
@@ -34,26 +37,83 @@ const Wallet: React.FC = () => {
       type: 'Buy',
     },
   ];
+
+  useEffect(() => {
+    const polkaLoad = async () => {
+      if (!web3auth) {
+        console.log('web3auth not initialized yet');
+        return;
+      }
+      await web3auth.initModal();
+      if (web3auth.provider) {
+        const rpc = new PolkadotRPC(web3auth.provider);
+        const balance = await rpc.getBalance();
+        // // await rpc.transferBalance('test', 'tets');
+        // try {
+        //   // const mintBlock = await rpc.createNFT();
+        //   const mintBlock = await rpc.fractionalizeNFT(25, 1, 100, 2);
+        //   console.log('Minted in block:', mintBlock);
+        // } catch (error) {
+        //   console.error('Error creating NFT:', error);
+        // }
+        setBalance(balance);
+      }
+    };
+
+    polkaLoad();
+  }, [web3auth, provider]);
+
   return (
     <>
       <AdminLayout>
         <Breadcrumb pageName={['Wallet']} />
+        <div className="grid grid-cols-1 w-full gap-2 md:gap-6 pb-8">
+          <div className="2xsm:flex-row sm:flex items-end md:justify-end">
+            <div className="pt-3 flex md:justify-end 2xsm:flex-col 2xsm:pt-3 sm:flex-row">
+              <div className="p-2">
+                <button
+                  className="flex flex-row w-45 h-10 py-2 justify-center rounded-full border border-primary text-primary hover:bg-opacity-90 p-3 font-medium gap-3 hover:bg-primary hover:text-white dark:text-gray-3 dark:border-gray-3 dark:hover:bg-primary"
+                  onClick={() => router.push('upload-assets')}
+                >
+                  <div>Buy MQTY Tokens</div>
+                </button>
+              </div>
+              <div className="p-2">
+                <button
+                  className="flex flex-row w-45 h-10 py-2 justify-center rounded-full border border-primary text-primary hover:bg-opacity-90 p-3 font-medium gap-3 hover:bg-primary hover:text-white dark:text-gray-3 dark:border-gray-3 dark:hover:bg-primary"
+                  onClick={() => router.push('upload-assets')}
+                >
+                  <div>Sell MQTY Tokens</div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="grid grid-cols-12 gap-4 md:gap-6 2xl:gap-7.5">
           <div className="col-span-12 xl:col-span-7">
             <div className="grid grid-cols-12 gap-4 md:gap-6 2xl:gap-7.5">
               <div className="col-span-12 md:col-span-6">
-                <div className="rounded-sm border border-stroke bg-ghostwhite-100 p-3 shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="rounded-sm border border-stroke bg-ghostwhite-100 shadow-default dark:border-strokedark dark:bg-boxdark">
                   <div className="flex flex-row items-center justify-between p-3 xl:p-8">
-                    <div className="font-semibold text-lg">MQTY tokens in your wallet</div>
-                    <div className=" text-zinc-900 text-7xl font-normal font-['Inter'] leading-10">15</div>
+                    <div className="font-semibold text-lg">MQTY Tokens</div>
+                    <div className=" text-zinc-900 text-7xl font-normal font-['Inter'] leading-10">
+                      <div>
+                        {balance ? (
+                          <p className="text-lg text-bold">
+                            {balance.prefix} {balance.symbol}
+                          </p>
+                        ) : null}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
               <div className="col-span-12 md:col-span-6">
-                <div className="rounded-sm border border-stroke bg-ghostwhite-100 p-3 shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="rounded-sm border border-stroke bg-ghostwhite-100 shadow-default dark:border-strokedark dark:bg-boxdark">
                   <div className="flex flex-row items-center justify-between p-3 xl:p-8">
                     <div className="font-semibold text-lg">Price of MQTY Tokens</div>
-                    <div className=" text-zinc-900 text-7xl font-normal font-['Inter'] leading-10">$4</div>
+                    <div className=" text-zinc-900 text-lg font-normal font-['Inter'] leading-10">$4</div>
                   </div>
                 </div>
               </div>
