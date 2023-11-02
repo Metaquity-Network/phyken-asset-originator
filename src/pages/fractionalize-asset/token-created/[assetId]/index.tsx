@@ -11,7 +11,6 @@ const assetUploaded: React.FC = () => {
   const [assetDetails, setAssetDetails] = useState<any>();
 
   useEffect(() => {
-    console.log('router', router.query.assetId);
     getAssetById();
   }, []);
 
@@ -19,7 +18,6 @@ const assetUploaded: React.FC = () => {
     const res = await axios.get(`/api/assets/getAssetById`, { params: { id: router.query.assetId } });
     if (res.status === 200) {
       const asset = res.data;
-      console.log('asset', asset);
       setAssetDetails(asset);
     }
   };

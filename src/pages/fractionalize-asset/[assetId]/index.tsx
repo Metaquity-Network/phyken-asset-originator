@@ -23,7 +23,6 @@ const FractionalizeAsset: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log('router', router.query.assetId);
     getAssetById();
   }, []);
 
@@ -31,7 +30,6 @@ const FractionalizeAsset: React.FC = () => {
     const res = await axios.get(`/api/assets/getAssetById`, { params: { id: router.query.assetId } });
     if (res.status === 200) {
       const asset = res.data;
-      console.log('asset', asset);
       setAssetDetails(asset);
     }
   };
@@ -52,16 +50,14 @@ const FractionalizeAsset: React.FC = () => {
       try {
         // TODO: Get the asset details
         // const latestAssetid = await rpc.getLatestAsset();
-        console.log(assetDetails);
         const mintBlock = (await rpc.fractionalizeNFT(
           assetDetails.nftDetails.nftCollectionID as number,
           assetDetails.nftDetails.nftItem as number,
           assetDetails.nftDetails.nftCollectionID as number,
           numberOfFractions as number,
         )) as object;
-        console.log('Minted in block:', mintBlock);
-        console.log('assetDetails', assetDetails);
         showToast('NFT Minted', { type: 'success' });
+
         await fetch('/api/fractionalization/fractionalize', {
           method: 'POST',
           body: JSON.stringify({
@@ -80,9 +76,6 @@ const FractionalizeAsset: React.FC = () => {
     }
   };
 
-  // const fractionalizeAsset = () => {
-  //   router.push('token-created');
-  // };
   return (
     <>
       <AdminLayout>

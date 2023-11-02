@@ -1,9 +1,8 @@
-'use·client';
 import { useEffect, useState } from 'react';
 
 type SetValue<T> = T | ((val: T) => T);
 
-function useLocalStorage<T>(key: string, initialValue: T): [T, (value: SetValue<T>) => void] {
+function useLocalStorage<T>(key: string, initialValue: T): [T, (value: SetValue<T>) => void, () => void, () => void] {
   // State to store our value
   const [storedValue, setStoredValue] = useState(() => {
     try {
@@ -30,6 +29,29 @@ function useLocalStorage<T>(key: string, initialValue: T): [T, (value: SetValue<
     }
   };
 
+  // Function to clear the local storage for a specific key
+  const clearLocalStorage = () => {
+    try {
+      if (typeof window !== 'undefined') {
+        window.localStorage.removeItem(key);
+        setStoredValue(initialValue);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // Function to clear the entire local storage
+  const clearAllLocalStorage = () => {
+    try {
+      if (typeof window !== 'undefined') {
+        window.localStorage.clear();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   // useEffect to update local storage when the state changes
   useEffect(() => {
     try {
@@ -42,7 +64,7 @@ function useLocalStorage<T>(key: string, initialValue: T): [T, (value: SetValue<
     }
   }, [key, storedValue]);
 
-  return [storedValue, setValue];
+  return [storedValue, setValue, clearLocalStorage, clearAllLocalStorage];
 }
 
 export default useLocalStorage;

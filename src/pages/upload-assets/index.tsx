@@ -109,7 +109,6 @@ const UploadAssets: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('formSubmitData', formSubmitData);
     try {
       await fetch('/api/assets/uploadAsset', {
         method: 'POST',
