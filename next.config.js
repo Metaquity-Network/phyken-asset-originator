@@ -13,6 +13,7 @@ const nextConfig = {
     VERSION: process.env.VERSION,
     BASE_URL: process.env.BASE_URL,
     POLKADOT_RPC_URL: process.env.POLKADOT_RPC_URL,
+    NEXT_PUBLIC_WEB3_AUTH_CLIENTID: process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENTID,
   },
 };
 

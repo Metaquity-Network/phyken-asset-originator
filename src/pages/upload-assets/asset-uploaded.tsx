@@ -21,7 +21,7 @@ const assetUploaded: React.FC = () => {
             <div className="flex justify-center pt-15 ">
               <button
                 className="flex flex-row md:w-[50%] 2xsm:w-[100%] h-10 py-2 justify-center rounded-full bg-primary hover:bg-opacity-90 p-3 font-medium text-gray gap-3"
-                onClick={() => router.push('/asset-verification')}
+                onClick={() => router.push('/')}
               >
                 <div>Return To Home</div>
               </button>

@@ -48,14 +48,6 @@ const Wallet: React.FC = () => {
       if (web3auth.provider) {
         const rpc = new PolkadotRPC(web3auth.provider);
         const balance = await rpc.getBalance();
-        // // await rpc.transferBalance('test', 'tets');
-        // try {
-        //   // const mintBlock = await rpc.createNFT();
-        //   const mintBlock = await rpc.fractionalizeNFT(25, 1, 100, 2);
-        //   console.log('Minted in block:', mintBlock);
-        // } catch (error) {
-        //   console.error('Error creating NFT:', error);
-        // }
         setBalance(balance);
       }
     };

@@ -3,9 +3,17 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import SignInForm from '../components/sign-in-form/sign-in-form';
+import SignInForm from '@/src/components/sign-in-form/sign-in-form';
+import { useEffect } from 'react';
+import useLocalStorage from '@/src/hooks/useLocalStorage';
 
 const Login: NextPage = () => {
+  const [storedValue, setValue, clearLocalStorage, clearAllLocalStorage] = useLocalStorage('myKey', 'default');
+
+  useEffect(() => {
+    clearAllLocalStorage();
+  }, []);
+
   return (
     <div className="w-screen h-screen overflow-hidden">
       <div className="flex flex-wrap items-center ">

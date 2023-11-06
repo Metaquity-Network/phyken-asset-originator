@@ -5,8 +5,10 @@ export default async function handler(req: NextApiRequest, res: any) {
   const version = process.env.VERSION || 'v1';
   const baseURL = process.env.BASE_URL || 'http://localhost:3000';
   const authToken = req.headers.cookie?.split('%22')[1];
+
+  console.log('bosadassy', req.body);
   try {
-    const response = await axios.get(`${baseURL}${version}/asset/listAssets`, {
+    const response = await axios.post(`${baseURL}${version}/fractionalization/fractionalize`, req.body, {
       headers: {
         ContentType: 'application/json',
         Authorization: 'Bearer ' + authToken,

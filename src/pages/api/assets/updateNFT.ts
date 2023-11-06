@@ -5,11 +5,12 @@ export default async function handler(req: NextApiRequest, res: any) {
   const version = process.env.VERSION || 'v1';
   const baseURL = process.env.BASE_URL || 'http://localhost:3000';
   const authToken = req.headers.cookie?.split('%22')[1];
-  console.log('req.body', req.body);
+
+  console.log('bosy', req.body);
   try {
-    const response = await axios.post(`${baseURL}${version}/asset/uploadAsset`, req.body, {
+    const response = await axios.post(`${baseURL}${version}/asset/updateNFT`, req.body, {
       headers: {
-        accept: 'application/json',
+        ContentType: 'application/json',
         Authorization: 'Bearer ' + authToken,
       },
     });
