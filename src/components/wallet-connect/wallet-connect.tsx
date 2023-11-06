@@ -10,7 +10,8 @@ import { walletLogin } from '@/src/reducers/features/wallet.reducers';
 
 export const Connect = () => {
   const router = useRouter();
-  const { web3auth, provider } = useWeb3Auth(); // Use the custom hook
+  const { web3auth, provider } = useWeb3Auth();
+
   const dispatch = useDispatch<AppDispatch>();
 
   const loginAPI = async (loginRequest: any) => {
@@ -35,26 +36,30 @@ export const Connect = () => {
       console.log('web3auth not initialized yet');
       return;
     }
-    await web3auth.initModal();
-    await web3auth.connect();
-    if (web3auth.provider) {
-      const rpc = new PolkadotRPC(web3auth.provider);
-      const userAccount = await rpc.getAccounts();
-      dispatch(walletLogin(userAccount));
-      const user = await web3auth.getUserInfo();
-      dispatch(
-        addUserDetails({
-          email: user.email,
-          username: user.name,
-          profileImage: user.profileImage,
-          isMfaEnabled: user.isMfaEnabled,
-        }),
-      );
-      loginAPI({
-        ...user,
-        authType: user.typeOfLogin,
-        tokenID: user.idToken,
-      });
+    try {
+      await web3auth.initModal();
+      await web3auth.connect();
+      if (web3auth.provider) {
+        const rpc = new PolkadotRPC(web3auth.provider);
+        const userAccount = await rpc.getAccounts();
+        dispatch(walletLogin(userAccount));
+        const user = await web3auth.getUserInfo();
+        dispatch(
+          addUserDetails({
+            email: user.email,
+            username: user.name,
+            profileImage: user.profileImage,
+            isMfaEnabled: user.isMfaEnabled,
+          }),
+        );
+        loginAPI({
+          ...user,
+          authType: user.typeOfLogin,
+          tokenID: user.idToken,
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

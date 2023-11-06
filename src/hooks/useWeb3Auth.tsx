@@ -25,7 +25,7 @@ export const useWeb3Auth = () => {
         setWeb3auth(web3authInstance);
         setProvider(web3authInstance.provider);
       } catch (error) {
-        console.error(error);
+        console.error('error', error);
       }
     };
     init();

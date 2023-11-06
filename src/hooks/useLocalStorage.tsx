@@ -46,6 +46,7 @@ function useLocalStorage<T>(key: string, initialValue: T): [T, (value: SetValue<
     try {
       if (typeof window !== 'undefined') {
         window.localStorage.clear();
+        window.sessionStorage.clear();
       }
     } catch (error) {
       console.error(error);
