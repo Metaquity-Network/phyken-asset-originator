@@ -78,7 +78,7 @@ const UploadLicenses: React.FC = () => {
     e.preventDefault();
     try {
       await axios.post('/api/licenses/uploadLicense', formSubmitData);
-      showToast('License uploaded', { type: 'success' });
+      showToast('User License uploaded', { type: 'success' });
       router.push('/');
     } catch (error: any) {
       console.error('Server Error:', error.response.status, error.response.data);
@@ -105,6 +105,7 @@ const UploadLicenses: React.FC = () => {
                     name="licenseNumber"
                     onChange={handleInputChange}
                     required
+                    autoComplete="false"
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
                 </div>
@@ -119,6 +120,7 @@ const UploadLicenses: React.FC = () => {
                     name="category"
                     onChange={handleInputChange}
                     required
+                    autoComplete="false"
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
                 </div>
@@ -133,6 +135,7 @@ const UploadLicenses: React.FC = () => {
                     name="licenseValidity"
                     onChange={handleInputChange}
                     required
+                    autoComplete="false"
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
                 </div>
@@ -147,6 +150,7 @@ const UploadLicenses: React.FC = () => {
                     name="country"
                     onChange={handleInputChange}
                     required
+                    autoComplete="false"
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
                 </div>
@@ -161,6 +165,7 @@ const UploadLicenses: React.FC = () => {
                     name="state"
                     onChange={handleInputChange}
                     required
+                    autoComplete="false"
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
                 </div>
