@@ -56,6 +56,8 @@ export const Connect = () => {
           ...user,
           authType: user.typeOfLogin,
           tokenID: user.idToken,
+          walletAddress: userAccount,
+          userRole: 'ORIGINATOR',
         });
       }
     } catch (error) {

@@ -1,4 +1,5 @@
 export type AssetList = {
+  _id: string;
   assetPrice: string;
   assetStatus: string;
   assetURL: string;

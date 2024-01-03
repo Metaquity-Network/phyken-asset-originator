@@ -16,6 +16,7 @@ const FractionalizeAsset: React.FC = () => {
   const { showToast } = useToast();
   const { web3auth, provider } = useWeb3Auth();
   const [assetDetails, setAssetDetails] = useState<any>();
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [numberOfFractions, setNumberOfFractions] = useState<number>(0);
 
   const handleInputChange = (e: any) => {
@@ -30,6 +31,7 @@ const FractionalizeAsset: React.FC = () => {
     const res = await axios.get(`/api/assets/getAssetById`, { params: { id: router.query.assetId } });
     if (res.status === 200) {
       const asset = res.data;
+      console.log(asset);
       setAssetDetails(asset);
     }
   };
@@ -43,10 +45,11 @@ const FractionalizeAsset: React.FC = () => {
       console.log('web3auth not initialized yet');
       return;
     }
+    setIsDisabled(true);
     await web3auth.initModal();
     if (web3auth.provider) {
       const rpc = new PolkadotRPC(web3auth.provider);
-      showToast('Please wait Your asset is fractionalized', { type: 'info' });
+      showToast('Please wait, Your asset is being fractionalized', { type: 'info' });
       try {
         // TODO: Get the asset details
         // const latestAssetid = await rpc.getLatestAsset();
@@ -56,14 +59,14 @@ const FractionalizeAsset: React.FC = () => {
           assetDetails.nftDetails.nftCollectionID as number,
           numberOfFractions as number,
         )) as object;
-        showToast('NFT Minted', { type: 'success' });
+        showToast('Asset Fractionalized', { type: 'success' });
 
         await fetch('/api/fractionalization/fractionalize', {
           method: 'POST',
           body: JSON.stringify({
             ...mintBlock,
             fractionalizationPrice: (assetDetails.assetPrice / numberOfFractions) as unknown as string,
-            id: router.query.assetId,
+            id: assetDetails._id,
           }),
           headers: {
             'Content-Type': 'application/json',
@@ -83,7 +86,7 @@ const FractionalizeAsset: React.FC = () => {
         {assetDetails ? (
           <div className="grid grid-cols-1 md:grid-cols-2 pt-4">
             <div className="grid grid-cols-1 md:grid-cols-2  md:col-span-1 px-10 pt-10 bg-bodydark1 dark:bg-boxdark">
-              <div className="w-1/2 2xsm:w-full ">
+              <div className="w-1/2 2xsm:w-full py-5">
                 <div className="text-xl font-semibold ">Asset Detail</div>
                 <div className="pt-5 flex">
                   <p className="font-bold">Name: </p>
@@ -97,7 +100,7 @@ const FractionalizeAsset: React.FC = () => {
                 <div className="font-bold text-1xl">${assetDetails.assetPrice}</div>
               </div>
               <div className="w-1/2 2xsm:w-full h-64 2xsm:pt-4 md:pt-0">
-                <Image className="h-[85%]" width={350} height={350} src={assetDetails.assetURL} alt="Cards" />
+                <Image className="h-[85%]" width={350} height={350} src={assetDetails.assetImageURL} alt="Cards" />
               </div>
             </div>
             <div className="grid-flow-col p-10 md:pt-45 "></div>
@@ -112,14 +115,15 @@ const FractionalizeAsset: React.FC = () => {
                     onChange={handleInputChange}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  <p className="pt-5 text-sm">Price per fraction: calculated automatically.</p>
+                  {/* <p className="pt-5 text-sm">Price per fraction: calculated automatically.</p> */}
                   <p className="text-sm text-danger">Warning that the user will not be able to change it later.</p>
                 </div>
               </div>
               <div className="pt-15 flex justify-center ">
                 <button
-                  className="flex flex-row 2xsm:w-full md:w-1/2 h-10 pt-2 justify-center rounded-full bg-primary hover:bg-opacity-90 p-3 font-medium text-gray gap-3"
+                  className="flex flex-row 2xsm:w-full md:w-1/2 h-10 pt-2 justify-center rounded-full bg-primary hover:bg-opacity-90 p-3 font-medium text-gray gap-3 disabled:opacity-70 disabled:hover:bg-primary"
                   onClick={() => fractionalizeAsset()}
+                  disabled={isDisabled}
                 >
                   <div>Confirm</div>
                 </button>
