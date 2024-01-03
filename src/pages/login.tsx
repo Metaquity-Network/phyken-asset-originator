@@ -8,6 +8,11 @@ import { useEffect } from 'react';
 import useLocalStorage from '@/src/hooks/useLocalStorage';
 import { Head } from 'next/document';
 
+export const metadata: Metadata = {
+  title: 'Login',
+  description: 'Login page',
+};
+
 const Login: NextPage = () => {
   const [storedValue, setValue, clearLocalStorage, clearAllLocalStorage] = useLocalStorage('myKey', 'default');
 
@@ -20,7 +25,7 @@ const Login: NextPage = () => {
       <div className="w-screen h-screen overflow-hidden">
         <div className="flex flex-wrap items-center text-gray-3">
           <div className="hidden w-full xl:block xl:w-1/2 bg-primary h-screen flex items-center justify-center">
-            <div className="mt-70 px-26 text-center">
+            <div className="mt-60 px-26 text-center">
               <Link className="mb-5.5 inline-block" href="/">
                 <Image className="hidden dark:block" src={'/images/logo/logo.svg'} alt="Logo" width={176} height={32} />
                 <Image className="dark:hidden" src={'/images/logo/logo-dark.svg'} alt="Logo" width={176} height={32} />
