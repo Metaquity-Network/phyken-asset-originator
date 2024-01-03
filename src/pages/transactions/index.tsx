@@ -13,29 +13,8 @@ const Transactions: React.FC = () => {
   const activeClasses = 'bg-primary text-white hover:opacity-100';
   const inactiveClasses = 'bg-gray dark:bg-meta-4 text-black dark:text-white';
 
-  const assetList: AssetList[] = [
-    {
-      assetId: '#123456',
-      category: 'Crypto',
-      name: 'Lorem',
-      price: '$500',
-      nft: 'NFT',
-    },
-    {
-      assetId: '#123456',
-      category: 'Crypto',
-      name: 'Lorem',
-      price: '$500',
-      nft: 'NFT',
-    },
-    {
-      assetId: '#123456',
-      category: 'Crypto',
-      name: 'Lorem',
-      price: '$500',
-      nft: 'NFT',
-    },
-  ];
+  const assetList: AssetList[] = [];
+
   return (
     <>
       <AdminLayout>
@@ -97,7 +76,7 @@ const Transactions: React.FC = () => {
                       <p className="text-l font-bold">NFT</p>
                     </div>
                   </div>
-                  {assetList.map((asset: AssetList, index: number) => {
+                  {/* {assetList.map((asset: AssetList, index: number) => {
                     return (
                       <div
                         key={index}
@@ -120,7 +99,7 @@ const Transactions: React.FC = () => {
                         </div>
                       </div>
                     );
-                  })}
+                  })} */}
                 </div>
               </div>
               <div className={`leading-relaxed ${openTab === 2 ? 'block' : 'hidden'}`}>
