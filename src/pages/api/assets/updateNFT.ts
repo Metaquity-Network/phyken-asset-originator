@@ -6,7 +6,6 @@ export default async function handler(req: NextApiRequest, res: any) {
   const baseURL = process.env.BASE_URL || 'http://localhost:3000';
   const authToken = req.headers.cookie?.split('%22')[1];
 
-  console.log('bosy', req.body);
   try {
     const response = await axios.post(`${baseURL}${version}/asset/updateNFT`, req.body, {
       headers: {

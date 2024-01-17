@@ -55,7 +55,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       name: 'Transactions',
       icon: 'FaExchangeAlt',
       pathname: '/transactions',
-      notification: 2,
     },
   ];
 
@@ -167,11 +166,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     >
                       <FaIcon icon={menu.icon} />
                       {menu.name}
-                      {menu.notification ? (
+                      {/* {menu.notification ? (
                         <span className="absolute right-4 block rounded-full bg-red py-1 px-2 text-xs font-medium text-white">
                           {menu.notification}
                         </span>
-                      ) : null}
+                      ) : null} */}
                     </Link>
                   </li>
                 );

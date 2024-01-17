@@ -34,7 +34,7 @@ export default function middleware(request: NextRequest) {
     return redirectIfAuthenticated(request);
   }
 
-  if (['/', '/dashboard', '/fractionalize-asset'].includes(request.nextUrl.pathname)) {
+  if (['/'].includes(request.nextUrl.pathname)) {
     return authenticated(request);
   }
 
