@@ -6,8 +6,6 @@ export default async function handler(req: NextApiRequest, res: any) {
   const baseURL = process.env.BASE_URL || 'http://localhost:3000';
   const authToken = req.headers.cookie?.split('%22')[1];
 
-  console.log(req.query);
-
   try {
     const response = await axios.get(`${baseURL}${version}/asset/getAssetById/${req.query.id}`, {
       headers: {

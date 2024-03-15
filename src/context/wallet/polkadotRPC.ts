@@ -52,24 +52,6 @@ export default class PolkadotRPC {
     return { prefix, postfix, symbol: format[1] };
   };
 
-  getUserTransactionHistory = async (): Promise<any> => {
-    const api = await this.makeClient();
-    const keyPair = await this.getPolkadotKeyPair();
-  };
-
-  transferBalance = async (accountID: string, value: any): Promise<any> => {
-    const keyPair = await this.getPolkadotKeyPair();
-    const api = await this.makeClient();
-    await api.tx.balances.transfer(keyPair.address, 121212121211212).signAndSend(keyPair);
-    this.getFormat(api.registry, 0);
-    const info = await api.tx.balances.transfer(keyPair.address, 121212121211212).paymentInfo(keyPair.address);
-    console.log(`
-    class=${info.class.toString()},
-    weight=${info.weight.toString()},
-    partialFee=${info.partialFee.toHuman()}
-  `);
-  };
-
   getFormat(registry: Registry, formatIndex = 0): [number, string] {
     const decimals = registry.chainDecimals;
     const tokens = registry.chainTokens;
