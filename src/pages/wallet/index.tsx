@@ -3,40 +3,18 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { AssetHistory } from '@/src/types/history';
 import { AdminLayout } from '@/src/layout';
 import TokenPrice from '@/src/components/charts/token-price';
 import Breadcrumb from '@/src/components/Breadcrumbs/Breadcrumb';
 import { useWeb3Auth } from '@/src/hooks/useWeb3Auth';
-import PolkadotRPC from '@/src/context/wallet/polkadotRPC';
+import PolygonZkevmRPC from '@/src/context/wallet/polygonZkevmRPC';
+import { AccountHistory } from '@/src/types/history';
 
 const Wallet: React.FC = () => {
   const router = useRouter();
   const { web3auth, provider } = useWeb3Auth();
   const [balance, setBalance] = useState<any>(null);
-  const chatData: AssetHistory[] = [
-    {
-      date: '13 Dec 2020',
-      image: '/imagea/assets/asset-verified.png',
-      name: 'Tesco market',
-      price: '$75.67',
-      type: 'Buy',
-    },
-    {
-      date: '13 Dec 2020',
-      image: '/imagea/assets/asset-verified.png',
-      name: 'Tesco market',
-      price: '$75.67',
-      type: 'Buy',
-    },
-    {
-      date: '13 Dec 2020',
-      image: '/imagea/assets/asset-verified.png',
-      name: 'Tesco market',
-      price: '$75.67',
-      type: 'Buy',
-    },
-  ];
+  const [accounttHistory, setAccounttHistory] = useState<AccountHistory[]>();
 
   useEffect(() => {
     const polkaLoad = async () => {
@@ -46,14 +24,20 @@ const Wallet: React.FC = () => {
       }
       await web3auth.initModal();
       if (web3auth.provider) {
-        const rpc = new PolkadotRPC(web3auth.provider);
-        const balance = await rpc.getBalance();
-        setBalance(balance);
+        const rpc = new PolygonZkevmRPC(web3auth.provider);
+        const history = await rpc.fetchTransactionHistory();
+        console.log(history);
+        setAccounttHistory(history);
       }
     };
 
     polkaLoad();
   }, [web3auth, provider]);
+
+  const viewTx = (hash: string) => {
+    const url = `https://sn2-stavanger-blockscout.eu-north-2.gateway.fm/tx${hash}`;
+    window.open(url, '_blank');
+  };
 
   return (
     <>
@@ -119,25 +103,24 @@ const Wallet: React.FC = () => {
               <h4 className="mb-6 px-7.5 text-xl font-semibold text-black dark:text-white">History</h4>
 
               <div>
-                {chatData.map((chat, key) => (
-                  <div className="flex items-center gap-5 py-3 px-7.5 hover:bg-gray-3 dark:hover:bg-meta-4" key={key}>
-                    <div className="relative h-14 w-14 rounded-full">
-                      <Image src="/images/user/user-01.png" alt="User" width={57} height={56} />
-                    </div>
+                {accounttHistory?.map((account, key) => (
+                  <>
+                    <div className="flex items-center gap-5 py-3 px-7.5 hover:bg-gray-3 dark:hover:bg-meta-4" key={key}>
+                      <div className="relative h-14 w-14 rounded-full">{account.block}</div>
 
-                    <div className="flex flex-1 items-center justify-between">
-                      <div>
-                        <h5 className="font-medium text-black dark:text-white">Tesco Market</h5>
-                        <p>
-                          <span className="text-xs"> Buy</span>
-                        </p>
-                      </div>
-                      <div className="flex h-6 w-6 flex-col items-center justify-center">
+                      <div className="flex flex-1 items-center justify-between">
+                        <div>
+                          <h5 className="font-medium text-black dark:text-white">From: {account.from?.hash} </h5>
+                          <p>
+                            <span className="text-xs"> To: {account.to?.hash} </span>
+                          </p>
+                        </div>
+                        {/* <div className="flex h-6 w-6 flex-col items-center justify-center">
                         <span className="text-lg font-bold text-white"> $75.65</span>
-                        <span className="text-sm font-medium text-white"> count</span>
+                      </div> */}
                       </div>
                     </div>
-                  </div>
+                  </>
                 ))}
               </div>
             </div>

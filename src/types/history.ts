@@ -1,7 +1,10 @@
-export type AssetHistory = {
-  image?: string;
-  name?: string;
-  type?: string;
-  price?: string;
-  date?: string;
+export type AccountHistory = {
+  block?: string;
+  to?: {
+    hash: string;
+  };
+  from?: {
+    hash: string;
+  };
+  hash?: string;
 };

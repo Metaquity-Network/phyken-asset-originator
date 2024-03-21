@@ -1,4 +1,5 @@
 import { SafeEventEmitterProvider } from '@web3auth/base';
+import axios from 'axios';
 import Web3 from 'web3';
 
 export default class PolygonZkevmRPC {
@@ -45,4 +46,19 @@ export default class PolygonZkevmRPC {
   //     console.log('error', error);
   //   }
   // };
+
+  fetchTransactionHistory = async () => {
+    try {
+      const url =
+        'https://sn2-stavanger-blockscout.eu-north-2.gateway.fm/api/v2/addresses/0x985675C272104A4608CE651bf6aA65F6B6d4e739/transactions';
+
+      const response = await axios.get(url);
+      const data = response.data;
+      console.log('data', data.items);
+      return data.items;
+    } catch (error) {
+      console.error('Error fetching transaction history:', error);
+      return [];
+    }
+  };
 }
