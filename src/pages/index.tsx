@@ -3,15 +3,11 @@ import { NextPage } from 'next';
 import { AdminLayout } from '../layout';
 import { AssetList } from '../types/asset';
 import { useRouter } from 'next/router';
-import { FaPlus, FaQuestionCircle } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '../reducers/store';
 import DashboardCardTwo from '../components/cards/dashboardCardTwo';
 import axios from 'axios';
-import { useWeb3Auth } from '@/src/hooks/useWeb3Auth';
-import PolkadotRPC from '@/src/context/wallet/polkadotRPC';
-import { ToastContainer } from 'react-toastify';
-import { useToast } from '../hooks/useToast';
 
 const Home: NextPage = () => {
   const router = useRouter();

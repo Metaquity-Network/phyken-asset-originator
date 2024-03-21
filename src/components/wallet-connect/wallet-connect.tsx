@@ -2,15 +2,15 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/src/reducers/store';
-import PolkadotRPC from '@/src/context/wallet/polkadotRPC';
 import { deleteCookie, getCookie } from 'cookies-next';
 import { addUserDetails } from '@/src/reducers/features/userDetails.reducers';
 import { useWeb3Auth } from '@/src/hooks/useWeb3Auth';
 import { walletLogin } from '@/src/reducers/features/wallet.reducers';
+import PolygonZkevmRPC from '@/src/context/wallet/polygonZkevmRPC';
 
 export const Connect = () => {
   const router = useRouter();
-  const { web3auth, provider } = useWeb3Auth();
+  const { web3auth } = useWeb3Auth();
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -40,7 +40,7 @@ export const Connect = () => {
       await web3auth.initModal();
       await web3auth.connect();
       if (web3auth.provider) {
-        const rpc = new PolkadotRPC(web3auth.provider);
+        const rpc = new PolygonZkevmRPC(web3auth.provider);
         const userAccount = await rpc.getAccounts();
         dispatch(walletLogin(userAccount));
         const user = await web3auth.getUserInfo();
