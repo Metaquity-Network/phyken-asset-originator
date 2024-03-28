@@ -41,7 +41,7 @@ export const Connect = () => {
       await web3auth.connect();
       if (web3auth.provider) {
         const rpc = new PolygonZkevmRPC(web3auth.provider);
-        const userAccount = await rpc.getAccounts();
+        const userAccount = await rpc.getAccount();
         dispatch(walletLogin(userAccount));
         const user = await web3auth.getUserInfo();
         dispatch(
