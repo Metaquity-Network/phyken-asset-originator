@@ -1,6 +1,9 @@
+import { erc20Abi } from '@/src/config/abi';
 import { SafeEventEmitterProvider } from '@web3auth/base';
 import axios from 'axios';
 import Web3 from 'web3';
+
+const tokenAddress = '0x96917458d14847e5C365B6c07e92aFbCA9629c02';
 
 export default class PolygonZkevmRPC {
   private provider: SafeEventEmitterProvider;
@@ -9,7 +12,7 @@ export default class PolygonZkevmRPC {
     this.provider = provider;
   }
 
-  getAccounts = async () => {
+  getAccount = async () => {
     try {
       const web3 = new Web3(this.provider);
       const accounts = await web3.eth.getAccounts();
@@ -34,23 +37,26 @@ export default class PolygonZkevmRPC {
     }
   };
 
-  // getTokenBalance = async () => {
-  //   try {
-  //     const web3 = new Web3(this.provider);
-  //     const accounts = await web3.eth.getAccounts();
-  //     const contract = new web3.eth.Contract(erc20Abi, tokenAddress);
-  //     const balance = await contract.methods.balanceOf(accounts[0]).call();
-  //     console.log('Token balance', balance);
-  //   } catch (error) {
-  //     console.error('Error', error);
-  //     console.log('error', error);
-  //   }
-  // };
-
-  fetchTransactionHistory = async () => {
+  getTokenBalance = async () => {
     try {
-      const url =
-        'https://sn2-stavanger-blockscout.eu-north-2.gateway.fm/api/v2/addresses/0x985675C272104A4608CE651bf6aA65F6B6d4e739/transactions';
+      const web3 = new Web3(this.provider);
+      const accounts = await web3.eth.getAccounts();
+      const contract = new web3.eth.Contract(erc20Abi, tokenAddress);
+      const balanceWei = await contract.methods.balanceOf(accounts[0]).call();
+      console.log('Token balance Token balance', balanceWei);
+      const balanceTokens = web3.utils.fromWei(balanceWei, 'ether');
+      const balanceWithDecimals = parseFloat(balanceTokens).toFixed(2);
+      console.log('Token balance:', balanceWithDecimals);
+      return balanceWithDecimals;
+    } catch (error) {
+      console.error('Error', error);
+      console.log('error', error);
+    }
+  };
+
+  fetchTransactionHistory = async (address: string) => {
+    try {
+      const url = `https://sn2-stavanger-blockscout.eu-north-2.gateway.fm/api/v2/addresses/${address}/transactions`;
 
       const response = await axios.get(url);
       const data = response.data;

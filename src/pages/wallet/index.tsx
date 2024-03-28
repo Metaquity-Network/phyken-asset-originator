@@ -25,8 +25,11 @@ const Wallet: React.FC = () => {
       await web3auth.initModal();
       if (web3auth.provider) {
         const rpc = new PolygonZkevmRPC(web3auth.provider);
-        const history = await rpc.fetchTransactionHistory();
+        const address = await rpc.getAccount();
+        const history = await rpc.fetchTransactionHistory(address);
         console.log(history);
+        const balance = await rpc.getTokenBalance();
+        setBalance(balance);
         setAccounttHistory(history);
       }
     };
@@ -72,14 +75,10 @@ const Wallet: React.FC = () => {
               <div className="col-span-12 md:col-span-6">
                 <div className="rounded-sm border border-stroke bg-ghostwhite-100 shadow-default dark:border-strokedark dark:bg-boxdark">
                   <div className="flex flex-row items-center justify-between p-3 xl:p-8">
-                    <div className="font-semibold text-lg">MQTY Tokens</div>
-                    <div className=" text-zinc-900 text-7xl font-normal font-['Inter'] leading-10">
+                    <div className="font-semibold text-lg">ABI Tokens</div>
+                    <div className=" text-zinc-900 text-3xl font-normal font-['Inter'] leading-10">
                       <div>
-                        {balance ? (
-                          <p className="text-lg text-bold">
-                            {balance.prefix} {balance.symbol}
-                          </p>
-                        ) : null}
+                        <span>{balance ? balance : null}</span>
                       </div>
                     </div>
                   </div>
